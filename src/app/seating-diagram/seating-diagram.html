@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     [attr.width]="'816px'"
+     [attr.height]="'1056px'"
+     viewBox="0 0 816 1056"
+     style="border: 1px solid #ccc; background: white">
+
+  @for (row of [].constructor(rows()); track $index) {
+    @let rowIndex = $index;
+    <!-- both sides -->
+    @for (bench of [].constructor(2); track $index) {
+      @let benchIndex = $index;
+
+      @for (seat of [].constructor(ridersPerBench()); track $index) {
+        @let seatIndex = $index;
+        <!-- Skip if shortRearBench applies to this row -->
+        <circle
+          [attr.cx]="(benchIndex === 0 ? 100 : 600) + seatIndex * 40"
+          [attr.cy]="100 + rowIndex * 60"
+          r="18"
+          stroke="black"
+          fill="white"
+        />
+        <text
+          [attr.x]="(benchIndex === 0 ? 100 : 600) + seatIndex * 40"
+          [attr.y]="105 + rowIndex * 60"
+          text-anchor="middle"
+          font-size="12"
+        >
+          {{ rowSeatNames()[seatIndex + (benchIndex * ridersPerBench())] }}{{ rowIndex + 1 }}
+        </text>
+      }
+    }
+  }
+
+  <!-- Footer annotation -->
+  <text x="408" y="1040" text-anchor="middle" font-size="14" fill="black">
+    Max {{ ridersPerBench() }} riders per bench
+  </text>
+</svg>
