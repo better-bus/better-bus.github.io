@@ -36,11 +36,10 @@
       #index text {
         font-weight: bold;
         fill: #222;
-        font-size: 18px;
+        font-size: {{indexFontSize()}}px;
       }
     </style>
   </defs>
-
 
   <!-- Title -->
   <text
@@ -62,15 +61,31 @@
   </text>
 
   <g id="diagram">
+    @for (letter of rowSeatNames(); track letter) {
+      @let side = $index < ridersPerBench() ? 'left' : 'right';
+      @let x = side === 'left'
+        ? centerX() - benchWidth() + (seatDiameter() * $index)
+        : centerX() + (seatDiameter() * ($index - ridersPerBench() + 1));
+
+      <text
+        [attr.x]="x"
+        [attr.y]="headerHeight() + marginPx() - seatRadius()/2"
+        text-anchor="middle"
+        class="header"
+      >
+        {{ letter }}
+      </text>
+    }
+
     @for (row of [].constructor(rows()); track $index) {
       @let rowIndex = $index;
       @let cy = marginPx() + headerHeight() + seatRadius() + rowIndex * (rowSpacingPx() + seatDiameter());
 
       <!-- Left row label -->
       <text
-        [attr.x]="centerX() - benchWidth() - seatDiameter()"
+        [attr.x]="centerX() - benchWidth() - seatRadius() * 1.25"
         [attr.y]="cy"
-        text-anchor="start"
+        text-anchor="end"
         class="header"
       >
         {{ rowIndex + 1 }}
@@ -78,9 +93,9 @@
 
       <!-- Right row label -->
       <text
-        [attr.x]="centerX() + benchWidth() + seatDiameter()"
+        [attr.x]="centerX() + benchWidth() + seatRadius() * 1.25"
         [attr.y]="cy"
-        text-anchor="end"
+        text-anchor="start"
         class="header"
       >
         {{ rowIndex + 1 }}
@@ -134,9 +149,10 @@
   </g>
 
   <g id="index">
+    @let baseY = marginPx() + headerHeight() - seatRadius()/2;
     @for (entry of riderIndex(); track entry[0]) {
       @let index = $index;
-      @let y = marginPx() + headerHeight() + index * (seatLabelFontSize() * 1.2);
+      @let y = baseY + index * (indexFontSize() * 1.2);
       <text
         [attr.x]="widthPx() - marginPx() - indexWidthPx() + 10"
         [attr.y]="y"
@@ -153,6 +169,4 @@
       </text>
     }
   </g>
-
-
 </svg>

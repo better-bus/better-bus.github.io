@@ -23,7 +23,8 @@ export class SeatingDiagram {
   readonly headerFontSize = signal(25);
   readonly dpi = signal(96);
   readonly benchesPerRow = signal(2);
-  readonly indexWidthIn = signal(2);
+  readonly indexWidthIn = signal(1.125);
+  readonly indexFontSize = signal(9.25);
 
   readonly ridersPerRow = computed(() => this.ridersPerBench() * this.benchesPerRow());
   readonly rowSeatNames = computed(() => {
@@ -43,7 +44,13 @@ export class SeatingDiagram {
   readonly indexWidthPx = computed(() => this.dpi() * this.indexWidthIn());
 
   readonly availableHeight = computed(() => this.heightPx() - this.marginPx() * 2/* top and bottom margin */ - this.headerHeight());
-  readonly seatDiameter = computed(() => (this.availableHeight() / this.rows() - this.rowSpacingPx()));
+  readonly availableWidth = computed(() => this.widthPx() - this.marginPx() * 2/* left and right margin */ - this.indexWidthPx());
+  readonly seatDiameter = computed(() =>
+    Math.min(
+      (this.availableHeight() / this.rows() - this.rowSpacingPx()),
+      (this.availableWidth() / (this.ridersPerRow() + 3/* to account for labels and aisles */))
+    )
+  );
   readonly seatRadius = computed(() => this.seatDiameter() / 2);
   readonly seatLabelFontSize = computed(() => this.seatRadius() * 0.6/* ? */);
   readonly centerX = computed(() => (this.widthPx() - this.indexWidthPx()) / 2);
@@ -56,8 +63,4 @@ export class SeatingDiagram {
       .map(key => [seatAssignments[key], key] as const)
       .sort(([nameA], [nameB]) => nameA!.localeCompare(nameB!));
   });
-
-  constructor() {
-    effect(() => console.log(this.benchWidth()));
-  }
 }
