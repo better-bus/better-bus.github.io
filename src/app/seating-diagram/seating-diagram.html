@@ -1,39 +1,127 @@
-<svg xmlns="http://www.w3.org/2000/svg"
-     [attr.width]="'816px'"
-     [attr.height]="'1056px'"
-     viewBox="0 0 816 1056"
-     style="border: 1px solid #ccc; background: white">
+<svg xmlns="http://www.w3.org/2000/svg" [attr.width]="widthPx()" [attr.height]="heightPx()"
+  [attr.viewBox]="'0 0 ' + widthPx() + ' ' + heightPx()">
+  <!-- common styles -->
+  <defs>
+    <style>
+      .header {
+        font-weight: bold;
+        fill: #222;
+        alignment-baseline: middle;
+        font-size: {{headerFontSize()}}px;
+      }
+
+      .row-label {
+        font-weight: bold;
+        fill: #333;
+      }
+
+      .bench {
+        width: {{ ridersPerBench() * seatDiameter() }}px;
+        height: {{ seatDiameter() }}px;
+        rx: {{ seatRadius() / 4 }}px;
+        ry: {{ seatRadius() / 4 }}px;
+        stroke: black;
+        fill: none;
+      }
+
+      g.unoccupied {
+        opacity: .3;
+      }
+
+      g.unavailable {
+        opacity: .1;
+      }
+    </style>
+  </defs>
+
+
+  <!-- Title -->
+  <text
+    [attr.x]="marginPx()"
+    [attr.y]="marginPx()"
+    text-anchor="start"
+    class="header"
+  >
+    {{ title() }}
+  </text>
+
+  <!-- Subtitle -->
+  <text
+    [attr.x]="widthPx() - marginPx()"
+    [attr.y]="marginPx()"
+    text-anchor="end"
+    class="header"
+  >
+    Created: {{ now() | date:'shortDate' }}
+  </text>
 
   @for (row of [].constructor(rows()); track $index) {
     @let rowIndex = $index;
-    <!-- both sides -->
-    @for (bench of [].constructor(2); track $index) {
-      @let benchIndex = $index;
+    @let cy = marginPx() + headerHeight() + seatRadius() + rowIndex * (rowSpacingPx() + seatDiameter());
 
-      @for (seat of [].constructor(ridersPerBench()); track $index) {
-        @let seatIndex = $index;
-        <!-- Skip if shortRearBench applies to this row -->
-        <circle
-          [attr.cx]="(benchIndex === 0 ? 100 : 600) + seatIndex * 40"
-          [attr.cy]="100 + rowIndex * 60"
-          r="18"
-          stroke="black"
-          fill="white"
+    <!-- Left row label -->
+    <text
+      [attr.x]="centerX() - benchWidth() - seatDiameter()"
+      [attr.y]="cy"
+      text-anchor="middle"
+      class="header"
+    >
+      {{ rowIndex + 1 }}
+    </text>
+
+    <!-- Right row label -->
+    <text
+      [attr.x]="centerX() + benchWidth() + seatDiameter()"
+      [attr.y]="cy"
+      text-anchor="middle"
+      class="header"
+    >
+      {{ rowIndex + 1 }}
+    </text>
+
+    @for (bench of [].constructor(benchesPerRow()); track $index) {
+      @let benchIndex = $index;
+      @let baseX = benchIndex === 0 ? centerX() - benchWidth() : centerX() + seatDiameter();
+
+      <!-- Bench -->
+      @if (shortRearBench() && benchIndex === 0 && rowIndex === rows() - 1) {
+        <!-- cx should be the center of the short bench (the short bench is half the width of the normal bench) -->
+        @let cx = baseX + benchWidth() / 4 - seatRadius();
+        @let seatId = (rowIndex + 1) + rowSeatNames()[benchIndex * ridersPerBench()];
+        @let occupant = seatAssignments()[seatId];
+        <rect
+          [attr.x]="baseX - seatRadius()"
+          [attr.y]="cy - seatRadius()"
+          class="bench"
+          [style.width]="benchWidth() / 2 + 'px'"
         />
-        <text
-          [attr.x]="(benchIndex === 0 ? 100 : 600) + seatIndex * 40"
-          [attr.y]="105 + rowIndex * 60"
-          text-anchor="middle"
-          font-size="12"
-        >
-          {{ rowSeatNames()[seatIndex + (benchIndex * ridersPerBench())] }}{{ rowIndex + 1 }}
-        </text>
+        <g
+          [attr.transform]="'translate(' + cx + ',' + cy +')'"
+          busSeat [label]="occupant ?? seatId" [size]="seatDiameter()"
+          [class.unoccupied]="occupant === null"
+          [class.unavailable]="occupant === undefined"
+        />
+      } @else {
+        <rect
+          [attr.x]="baseX - seatRadius()"
+          [attr.y]="cy - seatRadius()"
+          class="bench" />
+
+        @for (seat of [].constructor(ridersPerBench()); track $index) {
+          @let benchSeatIndex = $index;
+          @let seatIndex = benchSeatIndex + (benchIndex * ridersPerBench());
+          @let cx = baseX + benchSeatIndex * seatDiameter();
+          @let seatId = (rowIndex + 1) + rowSeatNames()[seatIndex];
+          @let occupant = seatAssignments()[seatId];
+
+          <g
+            [attr.transform]="'translate(' + cx + ',' + cy +')'"
+            busSeat [label]="occupant ?? seatId" [size]="seatDiameter()"
+            [class.unoccupied]="occupant === null"
+            [class.unavailable]="occupant === undefined"
+          />
+        }
       }
     }
   }
-
-  <!-- Footer annotation -->
-  <text x="408" y="1040" text-anchor="middle" font-size="14" fill="black">
-    Max {{ ridersPerBench() }} riders per bench
-  </text>
 </svg>
