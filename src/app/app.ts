@@ -43,7 +43,8 @@ export class App {
     '2A': 'Joan M.',
     '2C': 'Jill O.',
     '2D': 'James P.',
-    '2F': 'John R.'
+    '2F': 'John R.',
+    '3A': 'Remmington L.'
   });
 
   constructor() {

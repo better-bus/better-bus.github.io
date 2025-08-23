@@ -7,8 +7,7 @@ export type SeatAssignments = Record<string, string | null | undefined>;
 @Component({
   selector: 'app-seating-diagram',
   imports: [DatePipe, BusSeat],
-  templateUrl: './seating-diagram.html',
-  styleUrl: './seating-diagram.scss'
+  templateUrl: './seating-diagram.html'
 })
 export class SeatingDiagram {
   readonly title = input.required<string>();
@@ -20,10 +19,11 @@ export class SeatingDiagram {
   readonly now = signal(new Date());
   readonly diagramSizeIn = signal({ width: 8.5, height: 11 });
   readonly marginSizeIn = signal(.5);
-  readonly rowSpacingIn = signal(.125);
+  readonly rowSpacingIn = signal(.0625);
   readonly headerFontSize = signal(25);
   readonly dpi = signal(96);
   readonly benchesPerRow = signal(2);
+  readonly indexWidthIn = signal(2);
 
   readonly ridersPerRow = computed(() => this.ridersPerBench() * this.benchesPerRow());
   readonly rowSeatNames = computed(() => {
@@ -40,14 +40,22 @@ export class SeatingDiagram {
   readonly heightPx = computed(() => this.dpi() * this.diagramSizeIn().height * .99); // prevents overflow onto a second, blank page
   readonly marginPx = computed(() => this.dpi() * this.marginSizeIn());
   readonly rowSpacingPx = computed(() => this.dpi() * this.rowSpacingIn());
+  readonly indexWidthPx = computed(() => this.dpi() * this.indexWidthIn());
 
   readonly availableHeight = computed(() => this.heightPx() - this.marginPx() * 2/* top and bottom margin */ - this.headerHeight());
   readonly seatDiameter = computed(() => (this.availableHeight() / this.rows() - this.rowSpacingPx()));
   readonly seatRadius = computed(() => this.seatDiameter() / 2);
   readonly seatLabelFontSize = computed(() => this.seatRadius() * 0.6/* ? */);
-  readonly centerX = computed(() => this.widthPx() / 2);
+  readonly centerX = computed(() => (this.widthPx() - this.indexWidthPx()) / 2);
   readonly benchWidth = computed(() => this.ridersPerBench() * this.seatDiameter());
 
+  readonly riderIndex = computed(() => {
+    const seatAssignments = this.seatAssignments();
+    return Object.keys(seatAssignments)
+      .filter(key => !!seatAssignments[key])
+      .map(key => [seatAssignments[key], key] as const)
+      .sort(([nameA], [nameB]) => nameA!.localeCompare(nameB!));
+  });
 
   constructor() {
     effect(() => console.log(this.benchWidth()));
