@@ -22,6 +22,7 @@ export class LabelFontSizePipe {
     // since this will be displayed inside of a circle,
     // we don't want the text cut off by the circle edges
     const correctSize = maxSize * .9;
+    span.remove();
     return correctSize;
   }
 }
@@ -46,6 +47,11 @@ export class LabelFontSizePipe {
           {{ fragment }}
         </svg:text>
       }
+    }
+  `,
+  styles: `
+    :host {
+      cursor: pointer;
     }
   `,
   imports: [LabelFontSizePipe, AsyncPipe]

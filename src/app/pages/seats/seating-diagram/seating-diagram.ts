@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, computed, effect, input, signal } from '@angular/core';
+import { Component, computed, effect, input, output, signal } from '@angular/core';
 import { BusSeat } from './bus-seat';
 
 export type SeatAssignments = Record<string, string | null | undefined>;
@@ -15,6 +15,8 @@ export class SeatingDiagram {
   readonly ridersPerBench = input.required<number>();
   readonly shortRearBench = input<boolean>(false);
   readonly seatAssignments = input<SeatAssignments>({});
+
+  readonly seatClick = output<{ seatId: string, rider: string | null | undefined } | undefined>();
 
   readonly now = signal(new Date());
   readonly diagramSizeIn = signal({ width: 8.5, height: 11 });

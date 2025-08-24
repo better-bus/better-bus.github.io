@@ -1,0 +1,63 @@
+<h1>Rosters</h1>
+
+<button (click)="showNewRosterForm.set(!showNewRosterForm())">
+  {{ showNewRosterForm() ? 'Cancel' : 'New Roster' }}
+</button>
+
+@if (showNewRosterForm()) {
+  <ng-container *ngTemplateOutlet="newRosterFormTemplate"></ng-container>
+}
+
+@for (roster of rosters(); track roster.name) {
+  <div class="roster"
+    (click)="selectedRoster.set(selectedRoster() === roster ? null : roster)"
+    [class.selected]="selectedRoster() === roster"
+  >
+    <span>{{ roster.name }} ({{ roster.schoolIds.join(', ') }})</span>
+    <button (click)="rostersService.deleteRoster(roster.id)">Delete</button>
+  </div>
+  @if (selectedRoster(); as selectedRoster) {
+    @if (selectedRoster === roster) {
+      <div class="form">
+        <h2>Edit Roster</h2>
+        <form>
+          <div>
+            <label for="editRosterName">Roster Name:</label>
+            <input id="editRosterName" name="editRosterName" [(ngModel)]="selectedRoster.name" required />
+          </div>
+
+          <div>
+            <label for="editRosterSchools">Roster Schools (comma-separated):</label>
+            <input id="editRosterSchools" name="editRosterSchools"
+              [ngModel]="selectedRoster.schoolIds.join(', ')"
+              (ngModelChange)="selectedRoster.schoolIds = $event.split(',').map(''.constructor.prototype.trim)"
+              required />
+          </div>
+
+          <button (click)="updateRoster(selectedRoster)">Save</button>
+        </form>
+      </div>
+    }
+  }
+} @empty {
+  <div>No rosters available</div>
+}
+
+<ng-template #newRosterFormTemplate>
+  <div class="form">
+    <h2>New Roster</h2>
+    <form>
+      <div>
+        <label for="newRosterName">New Roster Name:</label>
+        <input id="newRosterName" name="newRosterName" [(ngModel)]="newRosterForm.name" required />
+      </div>
+
+      <div>
+        <label for="newRosterSchools">New Roster Schools (comma-separated):</label>
+        <input id="newRosterSchools" name="newRosterSchools" [(ngModel)]="newRosterForm.schools" required />
+      </div>
+
+      <button (click)="createNewRoster()">Add Roster</button>
+    </form>
+  </div>
+</ng-template>

@@ -111,6 +111,7 @@
           @let cx = baseX + benchWidth() / 4 - seatRadius();
           @let seatId = (rowIndex + 1) + rowSeatNames()[benchIndex * ridersPerBench()];
           @let occupant = seatAssignments()[seatId];
+          @let label = occupant === undefined ? '❌' : occupant ?? seatId;
           <rect
             [attr.x]="baseX - seatRadius()"
             [attr.y]="cy - seatRadius()"
@@ -119,9 +120,10 @@
           />
           <g
             [attr.transform]="'translate(' + cx + ',' + cy +')'"
-            busSeat [label]="occupant ?? seatId" [size]="seatDiameter()"
+            busSeat [label]="label" [size]="seatDiameter()"
             [class.unoccupied]="occupant === null"
             [class.unavailable]="occupant === undefined"
+            (click)="seatClick.emit({ seatId: seatId, rider: occupant })"
           />
         } @else {
           <rect
@@ -135,12 +137,14 @@
             @let cx = baseX + benchSeatIndex * seatDiameter();
             @let seatId = (rowIndex + 1) + rowSeatNames()[seatIndex];
             @let occupant = seatAssignments()[seatId];
+            @let label = occupant === undefined ? '❌' : occupant ?? seatId;
 
             <g
               [attr.transform]="'translate(' + cx + ',' + cy +')'"
-              busSeat [label]="occupant ?? seatId" [size]="seatDiameter()"
+              busSeat [label]="label" [size]="seatDiameter()"
               [class.unoccupied]="occupant === null"
               [class.unavailable]="occupant === undefined"
+              (click)="seatClick.emit({ seatId: seatId, rider: occupant })"
             />
           }
         }
