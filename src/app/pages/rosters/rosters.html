@@ -20,7 +20,8 @@
     @if (selectedRoster === roster) {
       <div class="form">
         <h2>Edit Roster</h2>
-        <form>
+        <app-import-sheet (studentsChange)="onStudentsChange($event)"></app-import-sheet>
+        <!-- <form>
           <div>
             <label for="editRosterName">Roster Name:</label>
             <input id="editRosterName" name="editRosterName" [(ngModel)]="selectedRoster.name" required />
@@ -35,8 +36,9 @@
           </div>
 
           <button (click)="updateRoster(selectedRoster)">Save</button>
-        </form>
+        </form> -->
       </div>
+      <a [routerLink]="['/rosters', selectedRoster.id, 'seating']">Seating</a>
     }
   }
 } @empty {

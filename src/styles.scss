@@ -7,3 +7,11 @@ html, body {
   padding: 0;
   background-color: #ddd;
 }
+
+@media print
+{
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+}

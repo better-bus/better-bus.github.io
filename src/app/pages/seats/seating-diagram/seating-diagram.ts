@@ -1,20 +1,48 @@
 import { DatePipe } from '@angular/common';
-import { Component, computed, effect, input, output, signal } from '@angular/core';
+import { Component, computed, effect, HostBinding, input, output, signal } from '@angular/core';
 import { BusSeat } from './bus-seat';
+import { Student } from '../../../models';
 
 export type SeatAssignments = Record<string, string | null | undefined>;
 
 @Component({
   selector: 'app-seating-diagram',
   imports: [DatePipe, BusSeat],
-  templateUrl: './seating-diagram.html'
+  templateUrl: './seating-diagram.html',
+  styles: `
+    .colorCoded .hasHousemates {
+      fill: blue;
+    }
+    .colorCoded .k {
+      stroke: red;
+    }
+    .colorCoded .k:not(.hasHousemates) {
+      fill:white;
+    }
+    .page {
+      background-color: white;
+      box-shadow: 0 0 5px rgba(0,0,0,.3);
+    }
+    @media print {
+      .page {
+        box-shadow: none;
+      }
+    }
+  `
 })
 export class SeatingDiagram {
   readonly title = input.required<string>();
   readonly rows = input.required<number>();
   readonly ridersPerBench = input.required<number>();
   readonly shortRearBench = input<boolean>(false);
+  readonly students = input<Record<string, Student>>({});
   readonly seatAssignments = input<SeatAssignments>({});
+  readonly colorCoded = input<boolean>(false);
+
+  @HostBinding('class.colorCoded')
+  get _colorCoded() {
+    return this.colorCoded();
+  }
 
   readonly seatClick = output<{ seatId: string, rider: string | null | undefined } | undefined>();
 
@@ -60,9 +88,26 @@ export class SeatingDiagram {
 
   readonly riderIndex = computed(() => {
     const seatAssignments = this.seatAssignments();
+    const students = this.students();
+    console.log(students);
     return Object.keys(seatAssignments)
       .filter(key => !!seatAssignments[key])
-      .map(key => [seatAssignments[key], key] as const)
+      .map(key => [students[seatAssignments[key]!]?.displayName, key] as const)
       .sort(([nameA], [nameB]) => nameA!.localeCompare(nameB!));
   });
+
+  readonly housemateIndex = computed(() => {
+    const students = this.students();
+    return Object.values(students).reduce((all, student) => {
+      student.housemateIds?.forEach(housemateId => {
+        all[student.id] = all[student.id] || [];
+        all[student.id].push(students[housemateId]?.displayName);
+      });
+      return all;
+    }, {} as Record<string, string[]>);
+  })
+
+  constructor() {
+    effect(() => console.log(this.riderIndex()))
+  }
 }

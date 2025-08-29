@@ -1,6 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" [attr.width]="widthPx()" [attr.height]="heightPx()"
   [attr.viewBox]="'0 0 ' + widthPx() + ' ' + heightPx()"
-  style="background-color: white; box-shadow: 0 0 5px rgba(0,0,0,.3);">
+  class="page"
+  [class.colorCoded]="colorCoded()"
+  >
   <!-- common styles -->
   <defs>
     <style>
@@ -110,8 +112,11 @@
           <!-- cx should be the center of the short bench (the short bench is half the width of the normal bench) -->
           @let cx = baseX + benchWidth() / 4 - seatRadius();
           @let seatId = (rowIndex + 1) + rowSeatNames()[benchIndex * ridersPerBench()];
-          @let occupant = seatAssignments()[seatId];
-          @let label = occupant === undefined ? '❌' : occupant ?? seatId;
+          @let assignment = seatAssignments()[seatId];
+          @let rider = assignment ? students()[assignment] : null;
+          @let label = assignment === undefined ? '❌' : rider?.displayName ?? seatId;
+          @let tooltip = rider ? rider.displayName + '\nseat ' + seatId + '' : seatId;
+
           <rect
             [attr.x]="baseX - seatRadius()"
             [attr.y]="cy - seatRadius()"
@@ -121,10 +126,15 @@
           <g
             [attr.transform]="'translate(' + cx + ',' + cy +')'"
             busSeat [label]="label" [size]="seatDiameter()"
-            [class.unoccupied]="occupant === null"
-            [class.unavailable]="occupant === undefined"
-            (click)="seatClick.emit({ seatId: seatId, rider: occupant })"
-          />
+            [class.unoccupied]="assignment === null"
+            [class.unavailable]="assignment === undefined"
+            (click)="seatClick.emit({ seatId: seatId, rider: assignment })"
+            [title]="tooltip"
+            [class.hasHousemates]="rider ? housemateIndex()[rider.id]?.length ?? 0 > 0 : false"
+            [class.k]="rider ? rider.grade === 'K' : null"
+          >
+            <title>{{ tooltip }}</title>
+          </g>
         } @else {
           <rect
             [attr.x]="baseX - seatRadius()"
@@ -136,16 +146,23 @@
             @let seatIndex = benchSeatIndex + (benchIndex * ridersPerBench());
             @let cx = baseX + benchSeatIndex * seatDiameter();
             @let seatId = (rowIndex + 1) + rowSeatNames()[seatIndex];
-            @let occupant = seatAssignments()[seatId];
-            @let label = occupant === undefined ? '❌' : occupant ?? seatId;
+            @let assignment = seatAssignments()[seatId];
+            @let rider = assignment ? students()[assignment] : null;
+            @let label = assignment === undefined ? '❌' : rider?.displayName ?? seatId;
+            @let tooltip = rider ? rider.name + '\ngrade: ' + rider.grade + '\nhousemates: ' + (housemateIndex()[rider.id]?.join(', ') ?? '') : seatId;
 
             <g
               [attr.transform]="'translate(' + cx + ',' + cy +')'"
               busSeat [label]="label" [size]="seatDiameter()"
-              [class.unoccupied]="occupant === null"
-              [class.unavailable]="occupant === undefined"
-              (click)="seatClick.emit({ seatId: seatId, rider: occupant })"
-            />
+              [class.unoccupied]="assignment === null"
+              [class.unavailable]="assignment === undefined"
+              (click)="seatClick.emit({ seatId: seatId, rider: assignment })"
+              [title]="tooltip"
+              [class.hasHousemates]="rider ? housemateIndex()[rider.id]?.length ?? 0 > 0 : false"
+              [class.k]="rider ? rider.grade === 'K' : null"
+            >
+              <title>{{ tooltip }}</title>
+            </g>
           }
         }
       }

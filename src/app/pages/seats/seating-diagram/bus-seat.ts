@@ -32,7 +32,9 @@ export class LabelFontSizePipe {
   template: `
     <svg:circle
       [attr.r]="size() / 2"
-      stroke="black" fill="none" />
+      stroke="black" fill="none">
+      <title>{{ title() }}</title>
+    </svg:circle>
 
     @let fontSize = (label() | labelFontSize : size());
     @for(fragment of labelFragments(); track $index) {
@@ -43,8 +45,10 @@ export class LabelFontSizePipe {
           alignment-baseline="middle"
           [attr.font-size]="fontSize + 'px'"
           [attr.y]="(labelFragments().length - 1) * lineNum * fontSize - (labelFragments().length - 1) * fontSize / 3"
+          [title]="title()"
         >
           {{ fragment }}
+          <title>{{ title() }}</title>
         </svg:text>
       }
     }
@@ -58,6 +62,7 @@ export class LabelFontSizePipe {
 })
 export class BusSeat {
   readonly label = input.required<string>();
+  readonly title = input<string>();
   readonly size = input.required<number>();
   readonly labelFragments = computed(() => this.label().split(/\s|\n/g));
 }
