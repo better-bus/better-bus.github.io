@@ -13,10 +13,46 @@ export type SeatAssignments = Record<string, string | null | undefined>;
     .colorCoded .hasHousemates {
       fill: blue;
     }
-    .colorCoded .k {
+    .colorCoded .grade-K {
       stroke: red;
     }
-    .colorCoded .k:not(.hasHousemates) {
+    .colorCoded .grade-1 {
+      stroke: orange;
+    }
+    .colorCoded .grade-2 {
+      stroke: yellow;
+    }
+    .colorCoded .grade-3 {
+      stroke: green;
+    }
+    .colorCoded .grade-4 {
+      stroke: blue;
+    }
+    .colorCoded .grade-5 {
+      stroke: purple;
+    }
+    .colorCoded .grade-6 {
+      stroke: red;
+    }
+    .colorCoded .grade-7 {
+      stroke: orange;
+    }
+    .colorCoded .grade-8 {
+      stroke: yellow;
+    }
+    .colorCoded .grade-9 {
+      stroke: green;
+    }
+    .colorCoded .grade-10 {
+      stroke: blue;
+    }
+    .colorCoded .grade-11 {
+      stroke: purple;
+    }
+    .colorCoded .grade-12 {
+      stroke: brown;
+    }
+    .colorCoded .grade-K:not(.hasHousemates) {
       fill:white;
     }
     .page {

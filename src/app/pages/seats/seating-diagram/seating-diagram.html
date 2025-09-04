@@ -115,7 +115,7 @@
           @let assignment = seatAssignments()[seatId];
           @let rider = assignment ? students()[assignment] : null;
           @let label = assignment === undefined ? '❌' : rider?.displayName ?? seatId;
-          @let tooltip = rider ? rider.displayName + '\nseat ' + seatId + '' : seatId;
+          @let tooltip = rider ? rider.name + '\ngrade: ' + rider.grade + '\nhousemates: ' + (housemateIndex()[rider.id]?.join(', ') ?? '') : seatId;
 
           <rect
             [attr.x]="baseX - seatRadius()"
@@ -126,12 +126,12 @@
           <g
             [attr.transform]="'translate(' + cx + ',' + cy +')'"
             busSeat [label]="label" [size]="seatDiameter()"
+            class="grade-{{rider?.grade || 'unknown'}}"
             [class.unoccupied]="assignment === null"
             [class.unavailable]="assignment === undefined"
             (click)="seatClick.emit({ seatId: seatId, rider: assignment })"
             [title]="tooltip"
             [class.hasHousemates]="rider ? housemateIndex()[rider.id]?.length ?? 0 > 0 : false"
-            [class.k]="rider ? rider.grade === 'K' : null"
           >
             <title>{{ tooltip }}</title>
           </g>
@@ -154,12 +154,12 @@
             <g
               [attr.transform]="'translate(' + cx + ',' + cy +')'"
               busSeat [label]="label" [size]="seatDiameter()"
+              class="grade-{{rider?.grade || 'unknown'}}"
               [class.unoccupied]="assignment === null"
               [class.unavailable]="assignment === undefined"
               (click)="seatClick.emit({ seatId: seatId, rider: assignment })"
-              [title]="tooltip"
               [class.hasHousemates]="rider ? housemateIndex()[rider.id]?.length ?? 0 > 0 : false"
-              [class.k]="rider ? rider.grade === 'K' : null"
+              [title]="tooltip"
             >
               <title>{{ tooltip }}</title>
             </g>

@@ -31,8 +31,7 @@ export class LabelFontSizePipe {
   selector: ':svg:g[busSeat]',
   template: `
     <svg:circle
-      [attr.r]="size() / 2"
-      stroke="black" fill="none">
+      [attr.r]="size() / 2">
       <title>{{ title() }}</title>
     </svg:circle>
 
@@ -56,6 +55,10 @@ export class LabelFontSizePipe {
   styles: `
     :host {
       cursor: pointer;
+    }
+    circle {
+      stroke: black;
+      fill: white;
     }
   `,
   imports: [LabelFontSizePipe, AsyncPipe]
