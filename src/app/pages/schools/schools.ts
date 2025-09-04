@@ -85,6 +85,16 @@ export class SchoolsComponent {
     } else {
       this.schoolsService.addSchool(updatedSchool as School);
     }
+
+    // Clear and close the new school form
+    this.showNewSchoolForm.set(false);
+    this.editSchoolForm.id.set(undefined);
+    this.editSchoolForm.name.set(undefined);
+    this.editSchoolForm.abbreviation.set(undefined);
+    this.editSchoolForm.address.set(undefined);
+    this.editSchoolForm.location.set(undefined);
+    this.editSchoolForm.type.set('Elementary');
+    this.editSchoolForm.grades.set(undefined);
   }
 
   // Private methods
