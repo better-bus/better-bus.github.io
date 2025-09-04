@@ -48,6 +48,7 @@ export interface Student {
 export interface School {
   id: string;
   name: string;
+  abbreviation?: string;
   address: string;
   location: GeoPosition;
   type: 'Preschool' | 'Elementary' | 'Middle' | 'High' | 'K-8' | 'K-12';

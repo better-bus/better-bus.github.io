@@ -1,0 +1,69 @@
+<h1>Schools</h1>
+
+@if (showNewSchoolForm()) {
+<button (click)="showNewSchoolForm.set(false); selectedSchool.set(null)">Cancel</button>
+}@else{
+<button (click)="showNewSchoolForm.set(true)">New School</button>
+}
+
+@if (showNewSchoolForm() && !selectedSchool()) {
+<div class="form">
+  <h2>New School</h2>
+  <ng-container *ngTemplateOutlet="schoolForm"></ng-container>
+</div>
+}
+
+@for (school of schools(); track school.name) {
+<div class="school" (click)="selectedSchool.set(selectedSchool() === school ? null : school)"
+  [class.selected]="selectedSchool() === school">
+  <header>
+    <h2>{{ school.name }}</h2>
+    <button (click)="deleteSchool(school.id)">Delete</button>
+  </header>
+
+  @if (selectedSchool() === school) {
+  <h3>Edit School</h3>
+  <ng-container *ngTemplateOutlet="schoolForm"></ng-container>
+  }
+</div>
+} @empty {
+<div>No schools available</div>
+}
+
+<ng-template #schoolForm>
+  <form (ngSubmit)="saveSchool()">
+    <div>
+      <label for="schoolName">School Name:</label>
+      <input id="schoolName" name="schoolName" [(ngModel)]="editSchoolForm.name" required />
+    </div>
+    <div>
+      <label for="schoolAbbreviation">Abbreviation/Short Name:</label>
+      <input id="schoolAbbreviation" name="schoolAbbreviation" [(ngModel)]="editSchoolForm.abbreviation" />
+    </div>
+    <div>
+      <label for="schoolAddress">Address:</label>
+      <input id="schoolAddress" name="schoolAddress" [(ngModel)]="editSchoolForm.address" required />
+    </div>
+    <div>
+      <label for="schoolLocation">Location (lat,lng):</label>
+      <input id="schoolLocation" name="schoolLocation" [(ngModel)]="editSchoolForm.location"
+        placeholder="e.g. 40.123,-75.456" required />
+    </div>
+    <div>
+      <label for="schoolType">Type:</label>
+      <select id="schoolType" name="schoolType" [(ngModel)]="editSchoolForm.type">
+        <option value="Preschool">Preschool</option>
+        <option value="Elementary">Elementary</option>
+        <option value="Middle">Middle</option>
+        <option value="High">High</option>
+        <option value="K-8">K-8</option>
+        <option value="K-12">K-12</option>
+      </select>
+    </div>
+    <div>
+      <label for="schoolGrades">Grades (comma-separated):</label>
+      <input id="schoolGrades" name="schoolGrades" [(ngModel)]="editSchoolForm.grades" />
+    </div>
+    <button type="submit">Save</button>
+  </form>
+</ng-template>

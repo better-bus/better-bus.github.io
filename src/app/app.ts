@@ -10,7 +10,8 @@ import { RouterLink, RouterOutlet, RouterLinkActive } from '@angular/router';
         <img class="icon" src="icon.png" />
         <span>BetterBus</span>
       </a>
-      <a [routerLink]="['/rosters']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Rosters</a>
+  <a [routerLink]="['/rosters']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Rosters</a>
+  <a [routerLink]="['/schools']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Schools</a>
     </nav>
     <router-outlet></router-outlet>
   `,

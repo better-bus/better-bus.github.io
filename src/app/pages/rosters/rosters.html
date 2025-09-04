@@ -21,22 +21,6 @@
       <div class="form">
         <h2>Edit Roster</h2>
         <app-import-sheet (studentsChange)="onStudentsChange($event)"></app-import-sheet>
-        <!-- <form>
-          <div>
-            <label for="editRosterName">Roster Name:</label>
-            <input id="editRosterName" name="editRosterName" [(ngModel)]="selectedRoster.name" required />
-          </div>
-
-          <div>
-            <label for="editRosterSchools">Roster Schools (comma-separated):</label>
-            <input id="editRosterSchools" name="editRosterSchools"
-              [ngModel]="selectedRoster.schoolIds.join(', ')"
-              (ngModelChange)="selectedRoster.schoolIds = $event.split(',').map(''.constructor.prototype.trim)"
-              required />
-          </div>
-
-          <button (click)="updateRoster(selectedRoster)">Save</button>
-        </form> -->
       </div>
       <a [routerLink]="['/rosters', selectedRoster.id, 'seating']">Seating</a>
     }
