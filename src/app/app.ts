@@ -26,7 +26,7 @@ import { PageTitleService } from './routing/page-title.service';
       gap: 1rem;
       background: #e5e7eb;
       padding: 0.5rem 2rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
     .app-name {
       color: black;
@@ -37,10 +37,7 @@ import { PageTitleService } from './routing/page-title.service';
       text-decoration: none;
       font-weight: bold;
       font-size: 1.5rem;
-      padding: 0.5rem 1rem;
-      background: #fff;
       border-radius: 8px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
     .app-name:visited {
       color: black;
