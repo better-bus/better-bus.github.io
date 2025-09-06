@@ -17,7 +17,6 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
         <a class="nav-btn" [routerLink]="['route']" routerLinkActive="active">Route & Schedule</a>
         <a class="nav-btn" [routerLink]="['student']" routerLinkActive="active">Student</a>
         <a class="nav-btn" [routerLink]="['seating']" routerLinkActive="active">Seating</a>
-        <a class="nav-btn" [routerLink]="['review']" routerLinkActive="active">Review</a>
       </nav>
 
       <article>

@@ -1,5 +1,4 @@
-import { Component, inject, model } from '@angular/core';
-import { effect } from '@angular/core';
+import { Component, inject, model, signal, effect } from '@angular/core';
 import { TransportationPlanService } from '../transportation-plan.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -21,48 +20,40 @@ import { FormsModule } from '@angular/forms';
         <br>
   <button type="submit" class="btn">Next</button>
       </form>
-      @if (errorMsg) {
-        <div style="color: red; margin-top: 1em;">{{ errorMsg }}</div>
+      @if (errorMsg()) {
+        <div style="color: red; margin-top: 1em;">{{ errorMsg() }}</div>
       }
     </div>
   `
 })
 export class NameStepComponent {
   readonly planService = inject(TransportationPlanService);
-  readonly route = inject(ActivatedRoute);
   readonly router = inject(Router);
+  readonly activatedRoute = inject(ActivatedRoute);
+  readonly currentPlan = this.planService.currentPlan;
   readonly planName = model('');
   readonly planDescription = model('');
+  readonly errorMsg = signal('');
 
   constructor() {
-    let id = this.route.snapshot.paramMap.get('id');
-    if (!id && this.route.parent) {
-      id = this.route.parent.snapshot.paramMap.get('id');
-    }
     effect(() => {
-      const plan = this.planService.plans().find(p => p.id === id);
-      if (plan) {
-        this.planName.set(plan.name ?? '');
-        this.planDescription.set(plan.description ?? '');
+      const name = this.currentPlan()?.name ?? '';
+      if (name && this.planName() !== name) {
+        this.planName.set(name);
       }
     });
   }
-  errorMsg = '';
 
   saveName() {
-    let id = this.route.snapshot.paramMap.get('id');
-    if (!id && this.route.parent) {
-      id = this.route.parent.snapshot.paramMap.get('id');
-    }
-    const plan = this.planService.plans().find(p => p.id === id);
-    console.log('saveName called', { id, plan, planName: this.planName(), planDescription: this.planDescription() });
+    this.errorMsg.set('');
+    const plan = this.currentPlan();
     if (plan && this.planName().trim()) {
       plan.name = this.planName().trim();
       plan.description = this.planDescription().trim();
       this.planService.updatePlan(plan);
-      this.router.navigate(['../bus'], { relativeTo: this.route });
+      this.router.navigate(['../bus'], { relativeTo: this.activatedRoute });
     } else {
-      this.errorMsg = !plan ? 'Plan not found.' : 'Please enter a valid name.';
+      this.errorMsg.set(!plan ? 'Plan not found.' : 'Please enter a valid name.');
     }
   }
 }

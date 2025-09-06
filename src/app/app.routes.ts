@@ -13,7 +13,6 @@ import { StopStepComponent } from './transportation-plan/wizard-steps/stop-step.
 import { RouteStepComponent } from './transportation-plan/wizard-steps/route-step.component';
 import { StudentStepComponent } from './transportation-plan/wizard-steps/student-step.component';
 import { SeatingStepComponent } from './transportation-plan/wizard-steps/seating-step.component';
-import { ReviewStepComponent } from './transportation-plan/wizard-steps/review-step.component';
 import { NameStepComponent } from './transportation-plan/wizard-steps/name-step.component';
 
 export const routes: Routes = [
@@ -42,7 +41,6 @@ export const routes: Routes = [
       { path: 'route', component: RouteStepComponent },
       { path: 'student', component: StudentStepComponent },
       { path: 'seating', component: SeatingStepComponent },
-      { path: 'review', component: ReviewStepComponent },
       { path: '', redirectTo: 'name', pathMatch: 'full' }
     ]
   },

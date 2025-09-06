@@ -16,7 +16,7 @@ export class TransportationPlanService {
   readonly plans = signal<TransportationPlan[]>([]);
   readonly currentPlan = computed(() => {
     const route = this.routingService.currentRoute();
-    let node = route?.root ?? null;
+    let node = route?.snapshot?.root ?? null;
     let id: string | null = null;
     while (node && !id) {
       id = node.params['id'] ? node.params['id'] : null;

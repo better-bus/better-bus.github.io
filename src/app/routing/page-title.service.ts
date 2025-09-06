@@ -14,7 +14,7 @@ export class PageTitleService {
   readonly title = computed(() => {
     const route = this.routeSignalService.currentRoute();
     return route
-      ? runInInjectionContext(this.injector, () => this.getTitle(route))
+      ? runInInjectionContext(this.injector, () => this.getTitle(route.snapshot))
       : '';
   });
 
