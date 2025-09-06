@@ -1,10 +1,11 @@
 import { Component, input } from '@angular/core';
 import { TransportationPlan } from '../models';
 import { RouterLink } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-transportation-plan-card',
-  imports: [RouterLink],
+  imports: [RouterLink, DatePipe],
   template: `
   <article>
       <h2>{{ plan().name || '(Untitled Plan)' }}</h2>
@@ -17,14 +18,22 @@ import { RouterLink } from '@angular/router';
       @if (plan().roster; as roster) {
         <div>{{ roster.studentIds.length }} students</div>
       }
-      <div>Last Updated: {{ plan().updatedAt }}</div>
-  <button class="btn" [routerLink]="['/plans', plan().id, 'name']">Edit</button>
-  <button class="btn">Delete</button>
-  <button class="btn">Duplicate</button>
-  <button class="btn">View Summary</button>
+      <div>Last Updated: {{ plan().updatedAt | date }}</div>
+      <div class="actions">
+        <button [routerLink]="['/plans', plan().id, 'name']">Edit</button>
+        <button><i class="fas fa-trash"></i></button>
+        <button><i class="fas fa-copy"></i></button>
+        <button><i class="fas fa-eye"></i></button>
+      </div>
   </article>
   `,
-  styles: []
+  styles: `
+    .actions {
+      display: flex;
+      flex-direction: row;
+      gap: 0.5rem;
+    }
+  `
 })
 export class TransportationPlanCardComponent {
   readonly plan = input.required<TransportationPlan>();
