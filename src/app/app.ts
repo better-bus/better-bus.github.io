@@ -1,51 +1,61 @@
-import { Component, signal } from '@angular/core';
-import { RouterLink, RouterOutlet, RouterLinkActive } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { RouterLink, RouterOutlet } from '@angular/router';
+import { PageTitleService } from './routing/page-title.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, RouterLink],
   template: `
-    <nav class="no-print">
+    <nav class="no-print app-navbar">
       <a [routerLink]="['/']" class="app-name">
         <img class="icon" src="icon.png" />
         <span>BetterBus</span>
       </a>
-  <a [routerLink]="['/rosters']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Rosters</a>
-  <a [routerLink]="['/schools']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Schools</a>
+      <span class="page-title">{{ titleService.title() }}</span>
     </nav>
-    <router-outlet></router-outlet>
+    <section>
+      <router-outlet></router-outlet>
+    </section>
   `,
   styles: `
-    nav {
+    .app-navbar {
       display: flex;
       flex-direction: row;
       align-items: center;
+      justify-content: space-between;
       gap: 1rem;
+      background: #e5e7eb;
+      padding: 0.5rem 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     }
-    nav a {
+    .app-name {
+      color: black;
       display: flex;
-      padding: 0.5rem;
-    }
-    .active {
+      flex-direction: row;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
       font-weight: bold;
+      font-size: 1.5rem;
+      padding: 0.5rem 1rem;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .app-name:visited {
+      color: black;
     }
     .icon {
       width: 2rem;
       height: 2rem;
     }
-    a.app-name {
-      color: black;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 1.5rem;
-    }
-    a.app-name:visited {
-      color: black;
+    .page-title {
+      flex: 1;
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #222;
+      letter-spacing: 0.02em;
     }
     .hide {
       visibility: hidden;
@@ -56,4 +66,5 @@ import { RouterLink, RouterOutlet, RouterLinkActive } from '@angular/router';
   `
 })
 export class App {
+  readonly titleService = inject(PageTitleService);
 }

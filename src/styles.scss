@@ -1,17 +1,118 @@
+/* Navigation button styles for wizard nav */
+.nav-btn {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--color-bg);
+  color: var(--color-primary);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  font-size: 1rem;
+  text-decoration: none;
+  margin-right: var(--space-xs);
+  transition: background 0.2s, color 0.2s;
+}
+.nav-btn:hover, .nav-btn:focus {
+  background: var(--color-primary);
+  color: #fff;
+}
+.nav-btn.active {
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: bold;
+}
 /* You can add global styles to this file, and also import other style files */
+
+:root {
+  --color-primary: #1976d2;
+  --color-bg: #f5f5f5;
+  --color-card-bg: #fff;
+  --color-border: #e5e7eb;
+  --color-text: #222;
+  --radius: 12px;
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 3rem;
+}
+
 * {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-sizing: border-box;
 }
 html, body {
   margin: 0;
   padding: 0;
   background-color: #ddd;
+  color: var(--color-text);
 }
 
-@media print
-{
-    .no-print, .no-print *
-    {
-        display: none !important;
-    }
+button {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+button:hover, button:focus {
+  background: #115293;
+}
+
+article {
+  background: var(--color-card-bg);
+  border-radius: var(--radius);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08), 0 1.5px 4px rgba(0,0,0,0.04);
+  padding: var(--space-md);
+  margin: var(--space-md) auto;
+  border: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+input, textarea, select {
+  font-size: 1rem;
+  padding: var(--space-xs);
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+  margin-bottom: var(--space-sm);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4 {
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: var(--space-sm);
+}
+
+.space-md {
+  margin-bottom: var(--space-md);
+}
+
+@media (max-width: 700px) {
+  article {
+    padding: var(--space-sm);
+    margin: var(--space-sm);
+    max-width: 98vw;
+  }
+}
+
+@media print {
+  .no-print, .no-print * {
+    display: none !important;
+  }
+}
+
+section {
+  padding: var(--space-md);
+}
+
+@media (max-width: 700px) {
+  section {
+    padding: 0;
+  }
 }

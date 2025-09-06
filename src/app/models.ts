@@ -1,3 +1,22 @@
+// Top-level object representing the entire transportation setup
+export interface TransportationPlan {
+  /** Internal unique ID, auto-generated (e.g. with nanoid), not user-editable */
+  id: string;
+  name: string;
+  description?: string;
+  bus: Bus;
+  schools: School[];
+  stops: Stop[];
+  routes: Route[];
+  schedules: Schedule[];
+  roster: Roster;
+  students: Student[];
+  seatAssignments: SeatAssignment[];
+  studentBusContexts?: StudentBusContext[];
+  createdAt?: DateString;
+  updatedAt?: DateString;
+}
+
 export interface Bus {
   number: number;
   rows: number;
@@ -9,12 +28,14 @@ export interface Bus {
 
 export type GeoPosition = [latitude: number, longitude: number];
 
+export type SideOfStreet = 'north' | 'south' | 'east' | 'west' | 'northeast' | 'southeast' | 'southwest' | 'northwest';
+
 export interface Stop {
   id: string;
   nickname: string;
   address: string;
   location: GeoPosition;
-  sideOfStreet: Array<'north' | 'south' | 'east' | 'west' | 'northeast' | 'southeast' | 'southwest' | 'northwest'>;
+  sideOfStreet: SideOfStreet[];
   notes?: string;
 }
 

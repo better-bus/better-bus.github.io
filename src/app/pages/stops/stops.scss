@@ -1,0 +1,58 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  padding: 1rem;
+  margin: 1rem;
+  background-color: white;
+  box-shadow: 0 0 5px rgba(0,0,0,.3);
+}
+
+.form {
+  padding: 1rem;
+  margin: 1rem 0;
+  border: 1px solid #ccc;
+  border-radius: .5rem;
+
+  h2 {
+    margin-top: 0;
+  }
+}
+
+.stops-container {
+  padding: 20px;
+}
+
+.stop-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background-color: #f9f9f9;
+}
+
+.stop-card h2 {
+  margin-top: 0;
+}
+
+.stop {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  cursor: pointer;
+
+  &.selected {
+    font-weight: bold;
+  }
+
+  header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    h2 {
+      margin: 0;
+    }
+  }
+}

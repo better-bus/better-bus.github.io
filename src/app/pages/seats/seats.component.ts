@@ -45,7 +45,7 @@ const PERSISTENCE_KEY = (routeId: string) => `seatAssignments.${routeId}`;
       }
 
       <div>
-        <h3>Unassigned Students</h3>
+        <h3>Unassigned Students ({{unassignedStudents().length}})</h3>
         @for (student of unassignedStudents(); track student.id)
         {
           <div

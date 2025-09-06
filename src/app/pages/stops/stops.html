@@ -1,0 +1,67 @@
+<h1>Stops</h1>
+
+@if (showNewStopForm()) {
+<button (click)="showNewStopForm.set(false); selectedStop.set(null)">Cancel</button>
+}@else{
+<button (click)="showNewStopForm.set(true)">New Stop</button>
+}
+
+@if (showNewStopForm() && !selectedStop()) {
+<div class="form">
+  <h2>New Stop</h2>
+  <ng-container *ngTemplateOutlet="stopForm"></ng-container>
+</div>
+}
+
+@for (stop of stops(); track stop.nickname) {
+<div class="stop" (click)="selectedStop.set(selectedStop() === stop ? null : stop)"
+  [class.selected]="selectedStop() === stop">
+  <header>
+    <h2>{{ stop.nickname }}</h2>
+    <button (click)="deleteStop(stop.id)">Delete</button>
+  </header>
+
+  @if (selectedStop() === stop) {
+  <h3>Edit Stop</h3>
+  <ng-container *ngTemplateOutlet="stopForm"></ng-container>
+  }
+</div>
+} @empty {
+<div>No stops available</div>
+}
+
+<ng-template #stopForm>
+  <form (ngSubmit)="saveStop()">
+    <div>
+      <label for="stopNickname">Stop Nickname:</label>
+      <input id="stopNickname" name="stopNickname" [(ngModel)]="editStopForm.nickname" required />
+    </div>
+    <div>
+      <label for="stopAddress">Address:</label>
+      <input id="stopAddress" name="stopAddress" [(ngModel)]="editStopForm.address" required />
+    </div>
+    <div>
+      <label for="stopLocation">Location (lat,lng):</label>
+      <input id="stopLocation" name="stopLocation" [(ngModel)]="editStopForm.location"
+        placeholder="e.g. 40.123,-75.456" required />
+    </div>
+    <div>
+      <label for="stopSideOfStreet">Side of Street:</label>
+      <select id="stopSideOfStreet" name="stopSideOfStreet" [(ngModel)]="editStopForm.sideOfStreet" multiple required>
+        <option value="north">North</option>
+        <option value="south">South</option>
+        <option value="east">East</option>
+        <option value="west">West</option>
+        <option value="northeast">Northeast</option>
+        <option value="southeast">Southeast</option>
+        <option value="southwest">Southwest</option>
+        <option value="northwest">Northwest</option>
+      </select>
+    </div>
+    <div>
+      <label for="stopNotes">Notes:</label>
+      <textarea id="stopNotes" name="stopNotes" [(ngModel)]="editStopForm.notes"></textarea>
+    </div>
+    <button type="submit">Save</button>
+  </form>
+</ng-template>
