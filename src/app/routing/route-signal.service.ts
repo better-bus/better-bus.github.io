@@ -1,7 +1,7 @@
 import { Injectable, inject } from "@angular/core";
 import { toSignal } from "@angular/core/rxjs-interop";
 import { Router, NavigationEnd, ActivatedRoute } from "@angular/router";
-import { filter, map } from "rxjs";
+import { debounceTime, filter, map } from "rxjs";
 
 @Injectable({ providedIn: 'root' })
 export class RouteStateSignalService {
@@ -10,6 +10,7 @@ export class RouteStateSignalService {
 
   readonly currentRoute = toSignal(this.router.events.pipe(
     filter(event => event instanceof NavigationEnd),
+    debounceTime(100),
     map(() => ({ snapshot:this.router.routerState.snapshot, activatedRoute: this.activatedRoute }))
   ));
 }
