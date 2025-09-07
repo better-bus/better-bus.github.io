@@ -15,12 +15,12 @@ export interface TransportationPlan {
   studentBusContexts?: StudentBusContext[];
   createdAt?: DateString;
   updatedAt?: DateString;
+  ridersPerBench?: number;
 }
 
 export interface Bus {
-  number: number;
+  number: string;
   rows: number;
-  ridersPerBench: number;
   shortRearBench?: boolean;
   wheelchairAccessible?: boolean;
   notes?: string;

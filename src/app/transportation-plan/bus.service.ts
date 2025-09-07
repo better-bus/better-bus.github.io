@@ -39,7 +39,7 @@ export class BusService {
     this.buses.update((buses) => buses.map((b) => b.number === bus.number ? bus : b));
   }
 
-  deleteBus(number: number) {
+  deleteBus(number: string) {
     this.buses.update((buses) => buses.filter((bus) => bus.number !== number));
   }
 }

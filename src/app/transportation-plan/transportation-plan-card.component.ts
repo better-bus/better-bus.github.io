@@ -7,7 +7,7 @@ import { DatePipe } from '@angular/common';
   selector: 'app-transportation-plan-card',
   imports: [RouterLink, DatePipe],
   template: `
-  <article>
+  <article [routerLink]="['/plans', plan().id, 'name']">
       <h2>{{ plan().name || '(Untitled Plan)' }}</h2>
       @if (plan().description; as description) {
         <p>{{ description }}</p>
@@ -20,14 +20,25 @@ import { DatePipe } from '@angular/common';
       }
       <div>Last Updated: {{ plan().updatedAt | date }}</div>
       <div class="actions">
-        <button [routerLink]="['/plans', plan().id, 'name']">Edit</button>
-        <button><i class="fas fa-trash"></i></button>
+        <!-- TODO: Implement these actions -->
+        <!-- <button><i class="fas fa-trash"></i></button>
         <button><i class="fas fa-copy"></i></button>
-        <button><i class="fas fa-eye"></i></button>
+        <button><i class="fas fa-eye"></i></button> -->
+        @if (!plan().seatAssignments.length) {
+          <button [routerLink]="['/plans', plan().id, 'seating']">
+            <i class="fas fa-chair"></i> Seats
+          </button>
+        }
       </div>
   </article>
   `,
   styles: `
+    article {
+      cursor: pointer;
+    }
+    article:hover {
+      background: #f9f9f9;
+    }
     .actions {
       display: flex;
       flex-direction: row;

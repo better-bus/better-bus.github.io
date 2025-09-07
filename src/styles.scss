@@ -73,7 +73,7 @@ article {
   gap: var(--space-sm);
 }
 
-input, textarea, select {
+input:not([type='checkbox']):not([type='radio']), textarea, select {
   font-size: 1rem;
   padding: var(--space-xs);
   border-radius: 4px;
@@ -81,6 +81,21 @@ input, textarea, select {
   margin-bottom: var(--space-sm);
   width: 100%;
   box-sizing: border-box;
+}
+
+input[type='checkbox'], input[type='radio'] {
+  margin-right: var(--space-xs);
+  width: var(--space-sm);
+  height: var(--space-sm);
+  position: relative;
+}
+
+input[type='radio'] {
+  top: -3px;
+}
+
+input[type='checkbox'] {
+  top: -1px;
 }
 
 h1, h2, h3, h4 {
@@ -91,6 +106,10 @@ h1, h2, h3, h4 {
 
 .space-md {
   margin-bottom: var(--space-md);
+}
+
+.wizard-next-btn {
+  margin-top: 2rem;
 }
 
 @media (max-width: 700px) {
