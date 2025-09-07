@@ -15,6 +15,9 @@ import { DatePipe } from '@angular/common';
       @if (plan().bus; as bus) {
         <div>Bus #: {{ bus.number }}</div>
       }
+      @if (plan().stops.length) {
+        <div>{{ plan().stops.length }} stops</div>
+      }
       @if (plan().roster; as roster) {
         <div>{{ roster.studentIds.length }} students</div>
       }

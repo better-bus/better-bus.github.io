@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
       <h3>Seating Assignments Step</h3>
       <form class="seating-form">
         <label>Riders per bench:
-          <input [(ngModel)]="ridersPerBench" type="number" min="1" max="4" required />
+          <input [(ngModel)]="ridersPerBench" type="number" min="1" max="4" name="ridersPerBench" required />
         </label>
       </form>
     </div>

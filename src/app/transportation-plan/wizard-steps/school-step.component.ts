@@ -22,23 +22,23 @@ function parseGrades(gradesStr: string | undefined): Grade[] {
       <form (ngSubmit)="saveSchool()" style="margin-bottom: 1rem;">
         <div>
           <label>Name:</label>
-          <input [(ngModel)]="name" name="name" required />
+          <input [(ngModel)]="name" name="name" required (input)="saveSchool()" />
         </div>
         <div>
           <label>Abbreviation:</label>
-          <input [(ngModel)]="abbreviation" name="abbreviation" />
+          <input [(ngModel)]="abbreviation" name="abbreviation" (input)="saveSchool()" />
         </div>
         <div>
           <label>Address:</label>
-          <input [(ngModel)]="address" name="address" required />
+          <input [(ngModel)]="address" name="address" required (input)="saveSchool()" />
         </div>
         <div>
           <label>Location (lat,lng):</label>
-          <input [(ngModel)]="location" name="location" required />
+          <input [(ngModel)]="location" name="location" required (input)="saveSchool()" />
         </div>
         <div>
           <label>Type:</label>
-          <select [(ngModel)]="type" name="type">
+          <select [(ngModel)]="type" name="type" (input)="saveSchool()">
             <option value="Preschool">Preschool</option>
             <option value="Elementary">Elementary</option>
             <option value="Middle">Middle</option>
@@ -49,7 +49,7 @@ function parseGrades(gradesStr: string | undefined): Grade[] {
         </div>
         <div>
           <label>Grades (comma separated):</label>
-          <input [(ngModel)]="grades" name="grades" required />
+          <input [(ngModel)]="grades" name="grades" required (input)="saveSchool()" />
         </div>
         <button type="submit">Save</button>
         <button type="button" (click)="cancelEdit()">Cancel</button>

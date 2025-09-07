@@ -11,15 +11,19 @@
   margin-right: var(--space-xs);
   transition: background 0.2s, color 0.2s;
 }
-.nav-btn:hover, .nav-btn:focus {
+
+.nav-btn:hover,
+.nav-btn:focus {
   background: var(--color-primary);
   color: #fff;
 }
+
 .nav-btn.active {
   background: var(--color-primary);
   color: #fff;
   font-weight: bold;
 }
+
 /* You can add global styles to this file, and also import other style files */
 
 :root {
@@ -39,7 +43,9 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   box-sizing: border-box;
 }
-html, body {
+
+html,
+body {
   margin: 0;
   padding: 0;
   background-color: #ddd;
@@ -57,14 +63,16 @@ button {
   font-size: 1rem;
   transition: background 0.2s;
 }
-button:hover, button:focus {
+
+button:hover,
+button:focus {
   background: #115293;
 }
 
 article {
   background: var(--color-card-bg);
   border-radius: var(--radius);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08), 0 1.5px 4px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08), 0 1.5px 4px rgba(0, 0, 0, 0.04);
   padding: var(--space-md);
   margin: var(--space-md) auto;
   border: 1px solid var(--color-border);
@@ -73,7 +81,9 @@ article {
   gap: var(--space-sm);
 }
 
-input:not([type='checkbox']):not([type='radio']), textarea, select {
+input:not([type='checkbox']):not([type='radio']),
+textarea,
+select {
   font-size: 1rem;
   padding: var(--space-xs);
   border-radius: 4px;
@@ -83,7 +93,8 @@ input:not([type='checkbox']):not([type='radio']), textarea, select {
   box-sizing: border-box;
 }
 
-input[type='checkbox'], input[type='radio'] {
+input[type='checkbox'],
+input[type='radio'] {
   margin-right: var(--space-xs);
   width: var(--space-sm);
   height: var(--space-sm);
@@ -98,7 +109,10 @@ input[type='checkbox'] {
   top: -1px;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-weight: 600;
   margin-top: 0;
   margin-bottom: var(--space-sm);
@@ -121,7 +135,9 @@ h1, h2, h3, h4 {
 }
 
 @media print {
-  .no-print, .no-print * {
+
+  .no-print,
+  .no-print * {
     display: none !important;
   }
 }
@@ -133,5 +149,37 @@ section {
 @media (max-width: 700px) {
   section {
     padding: 0;
+  }
+}
+
+label {
+  font-weight: bold;
+}
+
+.instructions {
+  font-style: italic;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+form {
+  padding: .5rem;
+  outline: 1px solid var(--color-border);
+  border-radius: .5rem;
+  margin-block: 1rem;
+
+  .actions {
+    display: flex;
+    gap: .5rem;
   }
 }

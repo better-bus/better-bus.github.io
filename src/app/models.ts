@@ -36,6 +36,7 @@ export interface Stop {
   address: string;
   location: GeoPosition;
   sideOfStreet: SideOfStreet[];
+  curbside?: boolean;
   notes?: string;
 }
 

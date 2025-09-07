@@ -50,13 +50,6 @@ import { RouterLink } from '@angular/router';
     </div>
   `,
   styles: `
-    .bus-form {
-      max-width: 400px;
-      padding: .5rem;
-      outline: 1px solid var(--color-border);
-      border-radius: .5rem;
-      margin-block: 1rem;
-    }
     .bus-checkbox-row {
       display: flex;
       align-items: center;
