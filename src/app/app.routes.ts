@@ -1,10 +1,6 @@
-import { Routes, ActivatedRoute, Route } from "@angular/router";
+import { Routes, Route } from "@angular/router";
 import { inject, computed } from '@angular/core';
-import { SeatsComponent } from "./pages/seats/seats.component";
 import { TransportationPlanService } from './transportation-plan/transportation-plan.service';
-import { Rosters } from "./pages/rosters/rosters";
-import { SchoolsComponent } from "./pages/schools/schools";
-import { StopsComponent } from "./pages/stops/stops";
 import { TransportationPlanPageComponent } from './transportation-plan/transportation-plan-page.component';
 import { TransportationPlanWizardComponent } from './transportation-plan/transportation-plan-wizard.component';
 import { SchoolStepComponent } from './transportation-plan/wizard-steps/school-step.component';
@@ -47,8 +43,4 @@ export const plansRoute: Route = {
 export const routes: Routes = [
   { path: '', component: TransportationPlanPageComponent, pathMatch: 'full', title: 'Transportation Plans' },
   plansRoute,
-  { path: 'rosters', component: Rosters, title: 'Rosters' },
-  { path: 'rosters/:id/seating', component: SeatsComponent, title: 'Seating Chart' },
-  { path: 'schools', component: SchoolsComponent, title: 'Schools' },
-  { path: 'stops', component: StopsComponent, title: 'Stops' }
 ];

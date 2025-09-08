@@ -11,37 +11,76 @@ import { FormsModule } from '@angular/forms';
     <h2>Checklist Report</h2>
     <label for="schedule">Select Schedule:</label>
     <select [(ngModel)]="selectedScheduleId">
+      <div class="checklist-header">
+        <h2 class="plan-title">{{ plan()?.name }}</h2>
+        @if (selectedSchedule()) {
+          <h3 class="schedule-title">Schedule: {{ selectedSchedule()?.name }}</h3>
+        }
+      </div>
       @for (schedule of schedules(); track schedule.id) {
         <option [value]="schedule.id">{{ schedule.name }}</option>
       }
     </select>
     @if (selectedSchedule()) {
-      @for (stopInfo of orderedStops(); track stopInfo.stopId) {
-        @if (getStop(stopInfo.stopId)) {
-          <div class="stop-block">
-            <h3>Stop {{ getStop(stopInfo.stopId)?.id }}: {{ getStop(stopInfo.stopId)?.address }} <span class="time">({{ stopInfo.time }})</span></h3>
-            <ul>
-              @for (student of studentsForStop(stopInfo.stopId); track student.id) {
-                <li>
-                  @if (hasSeatingAssignment(student.id)) {
-                    <span class="bold">{{ student.name }}</span>
-                  } @else {
-                    <span class="italic">{{ student.name }}</span>
-                  }
-                </li>
-              }
-            </ul>
-          </div>
+      <div class="checklist-columns">
+        @for (stopInfo of orderedStops(); track stopInfo.stopId) {
+          @if (getStop(stopInfo.stopId)) {
+            <div class="stop-block">
+              <h3><strong>{{ getStop(stopInfo.stopId)?.id }}: {{ getStop(stopInfo.stopId)?.nickname }}</strong> <i>{{ getStop(stopInfo.stopId)?.address }}</i> <span class="time">({{ stopInfo.time }})</span></h3>
+              <ul>
+                @for (student of studentsForStop(stopInfo.stopId); track student.id) {
+                  <li>
+                    @if (hasSeatingAssignment(student.id)) {
+                      <span class="bold">{{ student.displayName }}</span>
+                    } @else {
+                      <span class="italic">{{ student.displayName }}</span>
+                    }
+                  </li>
+                }
+              </ul>
+            </div>
+          }
         }
-      }
+      </div>
     }
 
   `,
   styles: `
     .bold { font-weight: bold; }
     .italic { font-style: italic; }
-    .stop-block { margin-bottom: 2rem; }
+    .stop-block { margin-bottom: 1.2rem; break-inside: avoid; }
     .time { color: var(--primary-color, #007bff); }
+    .checklist-columns {
+      column-count: 2;
+      column-gap: 2rem;
+      width: 100%;
+    }
+    .checklist-header {
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .plan-title {
+      font-size: 1.2em;
+      margin-bottom: 0.2em;
+    }
+    .schedule-title {
+      font-size: 1em;
+      margin-bottom: 0.2em;
+    }
+    .screen-only {
+      display: block;
+    }
+    h3 {
+      font-weight: normal;
+      display: flex;
+      flex-direction: row;
+      gap: 0.5rem;
+
+      >*:last-child {
+        flex: 1;
+        text-align: right;
+      }
+    }
   `
 })
 export class ChecklistStepComponent {
