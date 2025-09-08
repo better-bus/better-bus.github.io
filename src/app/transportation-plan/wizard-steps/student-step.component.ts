@@ -17,9 +17,15 @@ import { ImportSheet } from '../../import-sheet/import-sheet';
       <h3>Imported Students</h3>
       <ul>
         @for (student of students(); track student.id) {
-          <li>{{ student.displayName }}</li>
+          <li>
+            {{ student.displayName }}
+            @if (getStopId(student.id)) {
+              <span style="color: var(--bb-gray); font-size: 0.95em;">(Stop: {{ getStopId(student.id) }})</span>
+            }
+          </li>
         }
       </ul>
+
     </div>
 
     <button class="wizard-nav" [routerLink]="['../seating']" [disabled]="students().length === 0">Next</button>
@@ -46,13 +52,34 @@ export class StudentStepComponent {
   }
 
   // Handler for spreadsheet import
-  onStudentsImported(imported: Student[]) {
+  onStudentsImported(imported: { student: Student, stopId: string }[]) {
     const plan = this.transportationPlanService.currentPlan() as TransportationPlan | undefined;
     if (plan) {
-      const updatedPlan: TransportationPlan = { ...plan, students: imported };
+      // Extract students and stop assignments
+      const students = imported.map(entry => entry.student);
+      const stopAssignments = imported
+        .filter(entry => entry.stopId)
+        .map(entry => ({ stop: { id: entry.stopId } as any, student: entry.student }));
+
+      // Update plan: students and roster.stopAssignments
+      const updatedPlan: TransportationPlan = {
+        ...plan,
+        students,
+        roster: {
+          ...plan.roster,
+          stopAssignments
+        }
+      };
       this.transportationPlanService.updatePlan(updatedPlan);
-      imported.sort((a,b) => a.displayName.localeCompare(b.displayName));
-      this.students.set(imported);
+      students.sort((a,b) => a.displayName.localeCompare(b.displayName));
+      this.students.set(students);
     }
+  }
+
+  // Helper to get stopId for a student
+  getStopId(studentId: string): string | undefined {
+    const plan = this.transportationPlanService.currentPlan() as TransportationPlan | undefined;
+    const stopAssignment = plan?.roster?.stopAssignments?.find(sa => sa.student.id === studentId);
+    return stopAssignment?.stop?.id;
   }
 }

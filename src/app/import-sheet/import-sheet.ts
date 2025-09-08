@@ -9,7 +9,8 @@ import { Grade, School, Student } from '../models';
   styleUrl: './import-sheet.scss'
 })
 export class ImportSheet {
-  readonly studentsChange = output<Student[]>();
+  // Emit array of { student, stopId }
+  readonly studentsChange = output<{ student: Student, stopId: string }[]>();
 
   selectedFileName = signal('');
 
@@ -31,7 +32,8 @@ export class ImportSheet {
       })).map((row: any, index: number, array: any[]) => ({
         ...row,
         DisplayName: array.filter((r: any) => r.PreferredName === row.PreferredName).length === 1 ? row.PreferredName : `${row.PreferredName} ${row.Surname?.[0]}`.trim(),
-        HouseMates: array.filter((r: any) => r !== row && !!r.Address && r.Address === row.Address).map((r: any) => r.uid)
+        HouseMates: array.filter((r: any) => r !== row && !!r.Address && r.Address === row.Address).map((r: any) => r.uid),
+        StopId: row.Stop // Parse Stop column (should be stop.id)
       }));
 
       workbook.Workbook = {
@@ -39,22 +41,25 @@ export class ImportSheet {
         Names: [...(workbook.Workbook?.Names ?? []), { Name: file.name, Ref: 'StudentEntries!A1' }]
       };
 
-      const students = studentEntries.map((row: any) => ({
-        id: row.uid,
-        name: `${row.Name} ${row.Surname}`,
-        displayName: row.DisplayName,
-        address: row.Address,
-        contact: {
-          name: row['Contact Name'],
-          phone: row['Contact Phone']
+      const studentsWithStop = studentEntries.map((row: any) => ({
+        student: {
+          id: row.uid,
+          name: `${row.Name} ${row.Surname}`,
+          displayName: row.DisplayName,
+          address: row.Address,
+          contact: {
+            name: row['Contact Name'],
+            phone: row['Contact Phone']
+          },
+          grade: row.Grade == '0' ? 'K' : row.Grade as Grade,
+          school: {} as School, // to be filled in later
+          housemateIds: row.HouseMates
         },
-        grade: row.Grade == '0' ? 'K' : row.Grade as Grade,
-        school: {} as School, // to be filled in later
-        housemateIds: row.HouseMates
+        stopId: row.StopId || ''
       }));
-      console.log('Imported students', students);
+      console.log('Imported students with stop', studentsWithStop);
 
-      this.studentsChange.emit(students);
+      this.studentsChange.emit(studentsWithStop);
     }
   }
 }
