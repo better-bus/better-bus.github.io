@@ -48,7 +48,7 @@ export class ScheduleTimeRangePipe implements PipeTransform {
               <input type="checkbox"
                 [name]="ds.day"
                 [(ngModel)]="ds.selected"
-                (click)="save()" />
+                (change)="save()" />
               {{ ds.day }}
             </label>
           }
@@ -57,7 +57,7 @@ export class ScheduleTimeRangePipe implements PipeTransform {
       <div>
         <h3>Stop Times</h3>
         <div class="stops-list">
-          @for (st of stopTimes(); track st.stop) {
+          @for (st of sortedStopTimes(); track st.stop) {
             <div>
               <label [title]="st.stop.address">
                 Stop {{ st.stop.id }}
@@ -70,7 +70,7 @@ export class ScheduleTimeRangePipe implements PipeTransform {
           }
         </div>
       </div>
-      <button (click)="editingSchedule.set(null)">Done</button>
+  <button (click)="save(); editingSchedule.set(null)">Done</button>
     </form>
     }
 
@@ -111,14 +111,33 @@ export class RouteScheduleStepComponent {
 
   readonly scheduleName = model('');
   readonly stops = signal<Stop[]>([]);
-  readonly stopTimes = signal<Array<{stop: Stop, time: WritableSignal<TimeString>}>>([]);
+  readonly stopTimes = signal<Array<{ stop: Stop, time: WritableSignal<TimeString> }>>([]);
   readonly stopTypes = signal<'pick up' | 'drop off'>('pick up');
   readonly buses = signal<Bus[]>([]);
   readonly routes = model<Route[]>([]);
   readonly schedules = model<Schedule[]>([]);
   readonly editingSchedule = signal<Schedule | null>(null);
-  daysOfWeek: DayOfWeek[] = ['Monday','Tuesday','Wednesday','Thursday','Friday'];
+  daysOfWeek: DayOfWeek[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
   readonly daySettings = signal<Array<{ day: DayOfWeek, selected: boolean }>>([]);
+
+  readonly sortedStopTimes = computed(() => {
+    return [...this.stopTimes()].sort((a, b) => {
+      const at = a.time();
+      const bt = b.time();
+      if (at && bt) {
+        if (at < bt) return -1;
+        if (at > bt) return 1;
+      } else if (at && !bt) {
+        return -1;
+      } else if (!at && bt) {
+        return 1;
+      }
+      // Fallback to stop id
+      if (a.stop.id < b.stop.id) return -1;
+      if (a.stop.id > b.stop.id) return 1;
+      return 0;
+    });
+  });
 
   constructor() {
     effect(() => {
@@ -168,7 +187,7 @@ export class RouteScheduleStepComponent {
     })));
     this.stopTimes.set(this.stops().map(s => {
       const stopEntry = schedule.stops.find(st => st.stopId === s.id);
-      console.log({s, stopEntry});
+      console.log({ s, stopEntry });
       return { stop: s, time: signal(stopEntry?.time ?? '') };
     }));
     if (schedule.stops.length > 0) {
@@ -188,6 +207,17 @@ export class RouteScheduleStepComponent {
       return;
     }
 
+    const daysSelected = this.daySettings().filter(ds => ds.selected).map(ds => ds.day);
+    const stopsSaved = this.stops().map(stop => ({
+      stopId: stop.id,
+      time: this.stopTimes().find(st => st.stop.id === stop.id)?.time() ?? '',
+      stopType: this.stopTypes()
+    }));
+    console.log('[SAVE] daysSelected:', daysSelected);
+    console.log('[SAVE] stopsSaved:', stopsSaved);
+    console.log('[SAVE] scheduleName:', this.scheduleName());
+    console.log('[SAVE] editingSchedule:', this.editingSchedule());
+
     const updatedPlan: TransportationPlan = {
       ...plan,
       schedules: this.schedules().map(s => {
@@ -195,18 +225,15 @@ export class RouteScheduleStepComponent {
           return {
             ...s,
             name: this.scheduleName(),
-            days: this.daySettings().filter(ds => ds.selected).map(ds => ds.day),
-            stops: this.stops().map(stop => ({
-              stopId: stop.id,
-              time: this.stopTimes().find(st => st.stop.id === stop.id)?.time() ?? '',
-              stopType: this.stopTypes()
-            }))
+            days: daysSelected,
+            stops: stopsSaved
           };
         }
         return s;
       }),
       updatedAt: new Date().toISOString()
     };
+    console.log('[SAVE] updatedPlan:', updatedPlan);
     this.planService.updatePlan(updatedPlan);
     this.schedules.set(updatedPlan.schedules.map(s => ({ ...s })));
   }
