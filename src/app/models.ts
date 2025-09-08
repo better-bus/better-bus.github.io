@@ -41,9 +41,11 @@ export interface Stop {
 }
 
 export type TimeString = string;
+export type DayOfWeek = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
 export interface Schedule {
+  id: string;
   name: string;
-  days: Array<'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday'>;
+  days: Array<DayOfWeek>;
   stops: Array<{ stopId: string, time: TimeString, stopType: 'pick up' | 'drop off' }>;
 }
 

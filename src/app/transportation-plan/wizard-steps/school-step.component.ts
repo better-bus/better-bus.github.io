@@ -14,7 +14,7 @@ function parseGrades(gradesStr: string | undefined): Grade[] {
   selector: 'app-school-step',
   imports: [FormsModule, RouterModule],
   template: `
-    <h2>Step: Schools</h2>
+    <h2>Schools</h2>
     @if (!editingSchool()) {
       <button type="button" (click)="startAdd()">Add School</button>
     }

@@ -10,7 +10,7 @@ import { TransportationPlanWizardComponent } from './transportation-plan/transpo
 import { SchoolStepComponent } from './transportation-plan/wizard-steps/school-step.component';
 import { BusStepComponent } from './transportation-plan/wizard-steps/bus-step.component';
 import { StopStepComponent } from './transportation-plan/wizard-steps/stop-step.component';
-import { RouteStepComponent } from './transportation-plan/wizard-steps/route-step.component';
+import { RouteScheduleStepComponent } from './transportation-plan/wizard-steps/route-step.component';
 import { StudentStepComponent } from './transportation-plan/wizard-steps/student-step.component';
 import { SeatingStepComponent } from './transportation-plan/wizard-steps/seating-step.component';
 import { NameStepComponent } from './transportation-plan/wizard-steps/name-step.component';
@@ -36,7 +36,7 @@ export const plansRoute: Route = {
     { path: 'bus', component: BusStepComponent },
     { path: 'schools', component: SchoolStepComponent, data: { displayName: 'Schools & Grades' } },
     { path: 'stops', component: StopStepComponent },
-    { path: 'routes', component: RouteStepComponent, data: { displayName: 'Routes & Schedules' } },
+    { path: 'routes', component: RouteScheduleStepComponent, data: { displayName: 'Route Schedules' } },
     { path: 'students', component: StudentStepComponent },
     { path: 'seating', component: SeatingStepComponent },
     { path: '', redirectTo: 'name', pathMatch: 'full' }
