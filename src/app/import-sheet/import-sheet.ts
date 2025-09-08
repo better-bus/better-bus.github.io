@@ -1,4 +1,4 @@
-import { Component, output } from '@angular/core';
+import { Component, output, signal } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { Grade, School, Student } from '../models';
 
@@ -11,13 +11,17 @@ import { Grade, School, Student } from '../models';
 export class ImportSheet {
   readonly studentsChange = output<Student[]>();
 
+  selectedFileName = signal('');
+
   async onFileSelected(event: Event) {
     const fileInput = event.target as HTMLInputElement;
     if (fileInput.files && fileInput.files.length > 0) {
       const file = fileInput.files[0];
 
+      this.selectedFileName.set(file.name);
+
       const data = await file.arrayBuffer();
-      const workbook = XLSX.read(data, { type: 'array',  });
+      const workbook = XLSX.read(data, { type: 'array', });
       const sheet = workbook.Sheets[workbook.SheetNames[0]];
       const rows = XLSX.utils.sheet_to_json(sheet, { defval: '' });
 
@@ -54,3 +58,4 @@ export class ImportSheet {
     }
   }
 }
+

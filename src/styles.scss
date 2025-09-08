@@ -52,7 +52,7 @@ body {
   color: var(--color-text);
 }
 
-button {
+button, input[type='submit'], input[type='file'] {
   display: inline-block;
   padding: var(--space-xs) var(--space-sm);
   background: var(--color-primary);
@@ -81,7 +81,7 @@ article {
   gap: var(--space-sm);
 }
 
-input:not([type='checkbox']):not([type='radio']),
+input:not([type='checkbox']):not([type='radio']):not([type='file']),
 textarea,
 select {
   font-size: 1rem;

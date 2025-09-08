@@ -1,2 +1,7 @@
-<label for="file-upload">Upload File:</label>
-<input type="file" id="file-upload" accept=".xlsx,.ods,.csv" (change)="onFileSelected($event)" />
+<div class="file-upload-group">
+  <label for="file-upload" class="file-upload-label">Upload File:</label>
+  <input type="file" id="file-upload" accept=".xlsx,.ods,.csv" (change)="onFileSelected($event)"
+    class="visually-hidden" />
+  <label for="file-upload" class="custom-file-btn">Choose File</label>
+  <span class="file-upload-filename" id="file-upload-filename">{{ selectedFileName() || 'No file chosen' }}</span>
+</div>

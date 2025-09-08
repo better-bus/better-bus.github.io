@@ -18,8 +18,8 @@ import { DatePipe } from '@angular/common';
       @if (plan().stops.length) {
         <div>{{ plan().stops.length }} stops</div>
       }
-      @if (plan().roster; as roster) {
-        <div>{{ roster.studentIds.length }} students</div>
+      @if (plan().students; as students) {
+        <div>{{ students.length }} students</div>
       }
       <div>Last Updated: {{ plan().updatedAt | date }}</div>
       <div class="actions">
