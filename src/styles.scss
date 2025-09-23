@@ -83,12 +83,12 @@ article {
 
 @media print {
   @page {
-    margin: 0.5in;
+    margin: 0.25in;
   }
   article, body, .wizard, .checklist-columns {
     width: 100% !important;
-    max-width: calc(100vw - 1in) !important;
-    max-height: calc(100vh - 1in) !important;
+    max-width: calc(100vw - .75in) !important;
+    max-height: calc(100vh - .75in) !important;
     margin: 0 !important;
     padding: 0 !important;
     background: #fff !important;
@@ -204,6 +204,9 @@ h4 {
   }
   html, body {
     size: letter landscape !important;
+  }
+  * {
+    overflow: hidden !important;
   }
 }
 

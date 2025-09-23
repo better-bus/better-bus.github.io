@@ -9,9 +9,9 @@ import { Student, SeatAssignment } from '../../models';
   standalone: true,
   imports: [FormsModule, SeatingDiagram],
   template: `
-    <div>
-      <h3>Seating Assignments Step</h3>
-      <form class="seating-form">
+    <div class="print-seating-diagram">
+      <h3 class="screen-only">Seating Assignments Step</h3>
+      <form class="seating-form screen-only">
         <label>Riders per bench:
           <input [(ngModel)]="ridersPerBench" type="number" min="1" max="4" name="ridersPerBench" required />
         </label>
@@ -60,7 +60,41 @@ import { Student, SeatAssignment } from '../../models';
     </div>
   `,
   styles: [
-    `.seating-form {
+  `@media print {
+      .print-seating-diagram {
+        display: block;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden !important;
+        page-break-after: always;
+      }
+      @page {
+        size: portrait;
+        margin: 0.5cm;
+      }
+    }
+    .screen-only {
+      display: block;
+    }
+    @media print {
+      .screen-only {
+        display: none !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      app-seating-diagram {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+      }
+    }
+    .no-print {
+      display: block;
+    }
+    .seating-form {
       max-width: 400px;
       display: flex;
       flex-direction: column;

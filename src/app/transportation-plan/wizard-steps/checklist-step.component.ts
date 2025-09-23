@@ -1,3 +1,5 @@
+// Weekday abbreviations for checklist boxes
+const WEEKDAYS = ['M', 'Tu', 'W', 'Th', 'F'];
 import { Component } from '@angular/core';
 import { signal, effect, model, inject } from '@angular/core';
 import { Stop, Student, Schedule, SeatAssignment, DayOfWeek } from '../../models';
@@ -9,6 +11,7 @@ import { DatePipe } from '@angular/common';
   selector: 'app-checklist-step',
   imports: [FormsModule, DatePipe],
   template: `
+<div class="print-checklist">
 <div class="checklist-header">
   <span class="plan-title print-only">{{ plan()?.name }}</span>
   <span class="bus-number print-only">Bus: {{ plan()?.bus?.number ?? '' }}</span>
@@ -42,12 +45,19 @@ import { DatePipe } from '@angular/common';
               </h3>
               <ul>
                 @for (student of studentsForStop(stopInfo.stopId); track student.id) {
-                  <li>
-                    @if (hasSeatingAssignment(student.id)) {
-                      <span class="bold">{{ student.displayName }}</span>
-                    } @else {
-                      <span class="italic">{{ student.displayName }}</span>
-                    }
+                  <li class="student-checklist-row">
+                    <span class="student-name">
+                      @if (hasSeatingAssignment(student.id)) {
+                        <span class="bold">{{ student.displayName }} <span class="student-grade">({{ student.grade }})</span></span>
+                      } @else {
+                        <span class="italic">{{ student.displayName }} <span class="student-grade">({{ student.grade }})</span></span>
+                      }
+                    </span>
+                    <span class="checkboxes-container">
+                      @for (day of WEEKDAYS; track day) {
+                        <span class="checkbox-box">{{ day }}</span>
+                      }
+                    </span>
                   </li>
                 }
               </ul>
@@ -58,6 +68,62 @@ import { DatePipe } from '@angular/common';
     }
   `,
   styles: `
+    .student-grade {
+      font-weight: normal;
+      font-style: normal;
+      margin-left: 0.2em;
+      color: #444;
+      font-size: 0.95em;
+    }
+    @media print {
+      body, .checklist-columns, .checklist-header, .stop-block {
+        overflow: hidden !important;
+      }
+    }
+      /* ...existing print styles... */
+    @media print {
+      ul, li, .student-checklist-row, .checkboxes-container, .checkbox-box {
+        margin: 0 !important;
+        padding: 0 !important;
+        line-height: 1 !important;
+      }
+      ul {
+        margin-block: 0 !important;
+        padding-block: 0 !important;
+      }
+      li.student-checklist-row {
+        min-height: 0 !important;
+        font-size: 17px !important;
+        line-height: 1 !important;
+        display: flex !important;
+        align-items: center !important;
+      }
+      .student-name {
+        font-size: 17px !important;
+        line-height: 1 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: inline-block !important;
+        vertical-align: middle !important;
+      }
+      .checkboxes-container {
+        min-width: 5em !important;
+        gap: 0.12em !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        vertical-align: middle !important;
+      }
+      .checkbox-box {
+        width: 1.25em !important;
+        height: 1.25em !important;
+        font-size: 13px !important;
+        margin-left: 0.08em !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        vertical-align: middle !important;
+      }
+    }
     .bold { font-weight: bold; }
     .italic { font-style: italic; }
     .stop-block { margin-bottom: 1.2rem;  }
@@ -80,7 +146,19 @@ import { DatePipe } from '@angular/common';
       }
     }
     @media print {
+      .print-checklist {
+        display: block;
+      }
+      .print-checklist {
+        /* Landscape orientation for checklist */
+        page-break-after: always;
+      }
+      .print-checklist {
+        width: 100vw;
+        height: 100vh;
+      }
       @page {
+        size: landscape;
         margin: 0.5cm;
       }
       .checklist-columns {
@@ -97,7 +175,7 @@ import { DatePipe } from '@angular/common';
         margin-bottom: 1rem;
       }
       .stop-block, .checklist-columns {
-        font-size: 14.5px !important;
+        font-size: 18px !important;
         line-height: 1.15 !important;
         margin-inline: 0 !important;
         margin-bottom: 0 !important;
@@ -106,6 +184,9 @@ import { DatePipe } from '@angular/common';
       }
       .stop-block {
         margin-bottom: 0.5rem !important;
+      }
+      h3 {
+        font-size: 18px !important;
       }
     }
     .checklist-header {
@@ -150,13 +231,58 @@ import { DatePipe } from '@angular/common';
       gap: 0.5rem !important;
     }
 
+    .student-checklist-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0;
+      padding: 0;
+      min-height: 1.1em;
+      line-height: 1.1;
+    }
+    .student-name {
+      margin: 0;
+      padding: 0;
+      font-size: inherit;
+      line-height: 1.1;
+      vertical-align: middle;
+    }
     ul {
       padding-block: 0 !important;
-      margin-block: 0.25rem !important;
+      margin-block: 0.05rem !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .checkboxes-container {
+      display: flex;
+      gap: 0.04em;
+      justify-content: flex-end;
+      min-width: 5em;
+      padding: 0;
+      margin: 0;
+      align-items: center;
+    }
+    .checkbox-box {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 0.9em;
+      height: 0.9em;
+      border: 1px solid #222;
+      border-radius: 2px;
+      font-size: 7pt;
+      font-weight: bold;
+      background: #fff;
+      color: #222;
+      margin-left: 0.02em;
+      box-sizing: border-box;
+      print-color-adjust: exact;
+      padding: 0;
     }
   `
 })
 export class ChecklistStepComponent {
+  readonly WEEKDAYS = ['M', 'Tu', 'W', 'Th', 'F'];
   readonly planService = inject(TransportationPlanService);
   readonly plan = this.planService.currentPlan;
 
