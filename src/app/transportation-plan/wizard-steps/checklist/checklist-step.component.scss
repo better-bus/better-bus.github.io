@@ -27,6 +27,9 @@
 }
 
 @media print {
+  @page {
+    size: letter landscape;
+  }
   .checklist-columns {
     display: block;
     columns: 3;

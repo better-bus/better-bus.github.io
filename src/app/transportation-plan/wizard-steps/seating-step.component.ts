@@ -29,7 +29,7 @@ import { Student, SeatAssignment } from '../../models';
             [colorCoded]="colorCoded()"
           ></app-seating-diagram>
         </div>
-        <div class="controls-column no-print">
+        <div class="controls-column screen-only">
           <div>
             <button (click)="clearSeatAssignments()">Delete All Seat Assignments</button>
           </div>
@@ -60,39 +60,15 @@ import { Student, SeatAssignment } from '../../models';
     </div>
   `,
   styles: [
-  `@media print {
-      .print-seating-diagram {
-        display: block;
-        width: 100vw;
-        height: 100vh;
-        overflow: hidden !important;
-        page-break-after: always;
-      }
+  ` @media print {
       @page {
-        size: portrait;
-        margin: 0.5cm;
-      }
-    }
-    .screen-only {
-      display: block;
-    }
-    @media print {
-      .screen-only {
-        display: none !important;
-      }
-      .no-print {
-        display: none !important;
+        size: letter portrait;
       }
       app-seating-diagram {
         position: absolute;
         top: 0;
         left: 0;
-        width: 100vw;
-        height: 100vh;
       }
-    }
-    .no-print {
-      display: block;
     }
     .seating-form {
       max-width: 400px;
@@ -103,6 +79,7 @@ import { Student, SeatAssignment } from '../../models';
     .seating-columns {
       display: flex;
       flex-direction: row;
+      flex-wrap: wrap;
       gap: 2rem;
       align-items: flex-start;
       margin-top: 2rem;
