@@ -82,13 +82,8 @@ article {
 }
 
 @media print {
-  @page {
-    margin: 0.25in;
-  }
-  article, body, .wizard, .checklist-columns {
+  article, body, .wizard {
     width: 100% !important;
-    max-width: calc(100vw - .75in) !important;
-    max-height: calc(100vh - .75in) !important;
     margin: 0 !important;
     padding: 0 !important;
     background: #fff !important;
@@ -98,18 +93,12 @@ article {
     border: none !important;
     overflow-x: hidden !important;
   }
-  li {
-    display: block !important;
-    margin-bottom: 0.1rem !important;
-    font-size: inherit !important;
-    gap: 0 !important;
-    align-items: start !important;
-  }
-  .screen-only, nav, .wizard-nav, .wizard > nav {
-    display: none !important;
-  }
   html, body {
-    size: letter landscape !important;
+    size: letter !important;
+  }
+
+  * {
+    background-color: transparent !important;
   }
 }
 
@@ -166,47 +155,15 @@ h4 {
   }
 }
 
-@media print {
-  body, .wizard {
-    width: 100vw !important;
-    max-width: 100vw !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    background: #fff !important;
-    color: #222 !important;
-  }
-  .checklist-columns {
-    column-count: 3 !important;
-    column-gap: 0.8rem !important;
-  }
-  .stop-block {
-    margin-bottom: 0.2rem !important;
-    font-size: 0.75em !important;
-    /* break-inside: avoid !important; */
-  }
-  .plan-title {
-    font-size: 0.85em !important;
-    margin-bottom: 0.05em !important;
-  }
-  .schedule-title {
-    font-size: 0.8em !important;
-    margin-bottom: 0.05em !important;
-  }
-  li {
-    display: block !important;
-    margin-bottom: 0.1rem !important;
-    font-size: inherit !important;
-    gap: 0 !important;
-    align-items: start !important;
-  }
-  .screen-only, nav, .wizard-nav, .wizard > nav {
+@media screen {
+  .print-only {
     display: none !important;
   }
-  html, body {
-    size: letter landscape !important;
-  }
-  * {
-    overflow: hidden !important;
+}
+
+@media print {
+  .screen-only {
+    display: none !important;
   }
 }
 
@@ -250,4 +207,8 @@ form {
     display: flex;
     gap: .5rem;
   }
+}
+
+.nowrap {
+  white-space: nowrap;
 }

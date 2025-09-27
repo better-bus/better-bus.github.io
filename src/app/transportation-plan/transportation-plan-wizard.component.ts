@@ -11,7 +11,7 @@ import { TitleCasePipe } from '@angular/common';
   imports: [RouterLink, RouterLinkActive, RouterOutlet, TitleCasePipe],
   template: `
     <div class="wizard">
-      <nav class="wizard-nav">
+      <nav class="wizard-nav screen-only">
         @for (page of childPages; track page.path) {
           <a class="nav-btn" [routerLink]="[page.path]" routerLinkActive="active">{{ (page.data?.['displayName'] ?? page.path) | titlecase }}</a>
         }

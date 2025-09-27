@@ -35,7 +35,7 @@ export const plansRoute: Route = {
     { path: 'routes', component: RouteScheduleStepComponent, data: { displayName: 'Route Schedules' } },
     { path: 'students', component: StudentStepComponent },
   { path: 'seating', component: SeatingStepComponent },
-  { path: 'checklist', component: (await import('./transportation-plan/wizard-steps/checklist-step.component')).ChecklistStepComponent, data: { displayName: 'Checklist' } },
+  { path: 'checklist', component: (await import('./transportation-plan/wizard-steps/checklist/checklist-step.component')).ChecklistStepComponent, data: { displayName: 'Checklist' } },
   { path: '', redirectTo: 'name', pathMatch: 'full' }
   ]
 }

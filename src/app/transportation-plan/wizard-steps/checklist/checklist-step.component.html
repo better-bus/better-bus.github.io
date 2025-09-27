@@ -1,0 +1,61 @@
+<div class="print-checklist">
+  <div class="checklist-header screen-only">
+    <h2 class="plan-title">Checklist Report</h2>
+    <label for="schedule-group">Select Schedule Group:</label>
+    <select id="schedule-group" [(ngModel)]="selectedGroupIdx">
+      @for (group of scheduleGroups(); track group.label) {
+        <option [value]="scheduleGroups().indexOf(group)">{{ group.label }}</option>
+      }
+    </select>
+  </div>
+  <div class="checklist-header-print print-only">
+    <span>{{ plan()?.name }}</span>
+    <span>Bus: {{ plan()?.bus?.number ?? '' }}</span>
+    <span>{{ selectedGroup().type }}</span>
+  </div>
+
+  @if (selectedGroup(); as selectedGroup) {
+    <div class="checklist-columns">
+      @for (stop of selectedGroup.stops; track stop.id) {
+        <div class="stop-block">
+          <h3>
+            <span class="left">
+              <strong>{{ stop.id }}:</strong>
+              @if (stop.nickname) {
+                <span>
+                  {{stop.nickname}}
+                </span>
+                <br />
+              }
+              <span [class.deemphasize]="stop.nickname">
+                {{stop.address}}
+              </span>
+            </span>
+            <span class="right">
+              <span class="time" [innerHTML]="stop.timesFormatted"></span>
+            </span>
+          </h3>
+          <ul>
+            @for (student of stop.students; track student.id) {
+              <li class="student-checklist-row">
+                <span class="student-name">
+                  <span
+                    [class.bold]="student.hasSeat"
+                    [class.italic]="!student.hasSeat"
+                  >
+                    {{ student.displayName }} <span class="student-grade">({{ student.grade || '?' }})</span>
+                  </span>
+                </span>
+                <span class="checkboxes-container">
+                  @for (day of WEEKDAYS; track day) {
+                    <span class="checkbox-box" [class.gray]="!student.hasSeat">{{ day }}</span>
+                  }
+                </span>
+              </li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+  }
+</div>

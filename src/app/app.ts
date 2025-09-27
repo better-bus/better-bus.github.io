@@ -6,7 +6,7 @@ import { PageTitleService } from './routing/page-title.service';
   selector: 'app-root',
   imports: [RouterOutlet, RouterLink],
   template: `
-    <nav class="no-print app-navbar">
+    <nav class="screen-only app-navbar">
       <a [routerLink]="['/']" class="app-name">
         <img class="icon" src="icon.png" />
         <span>BetterBus</span>
