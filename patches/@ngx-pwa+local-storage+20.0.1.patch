@@ -1,0 +1,31 @@
+diff --git a/node_modules/@ngx-pwa/local-storage/fesm2022/ngx-pwa-local-storage.mjs b/node_modules/@ngx-pwa/local-storage/fesm2022/ngx-pwa-local-storage.mjs
+index d84f386..0d56f5a 100644
+--- a/node_modules/@ngx-pwa/local-storage/fesm2022/ngx-pwa-local-storage.mjs
++++ b/node_modules/@ngx-pwa/local-storage/fesm2022/ngx-pwa-local-storage.mjs
+@@ -1395,5 +1395,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.0.0", ngImpor
+  * Generated bundle index. Do not edit.
+  */
+ 
+-export { SERIALIZATION_ERROR, SerializationError, StorageMap, StorageModule, VALIDATION_ERROR, ValidationError, provideIndexedDBDataBaseName, provideIndexedDBDataBaseVersion, provideIndexedDBStoreName, provideLocalStoragePrefix };
++export { SERIALIZATION_ERROR, SerializationError, StorageMap, StorageModule, VALIDATION_ERROR, ValidationError, provideIndexedDBDataBaseName, provideIndexedDBDataBaseVersion, provideIndexedDBStoreName, provideLocalStoragePrefix, IDB_DB_NAME };
+ //# sourceMappingURL=ngx-pwa-local-storage.mjs.map
+diff --git a/node_modules/@ngx-pwa/local-storage/index.d.ts b/node_modules/@ngx-pwa/local-storage/index.d.ts
+index c6a1648..80dc3bb 100644
+--- a/node_modules/@ngx-pwa/local-storage/index.d.ts
++++ b/node_modules/@ngx-pwa/local-storage/index.d.ts
+@@ -1,5 +1,5 @@
+ import * as i0 from '@angular/core';
+-import { EnvironmentProviders, ModuleWithProviders } from '@angular/core';
++import { EnvironmentProviders, ModuleWithProviders, InjectionToken } from '@angular/core';
+ import { Observable } from 'rxjs';
+ 
+ /**
+@@ -654,5 +654,7 @@ declare class StorageMap {
+     static ɵprov: i0.ɵɵInjectableDeclaration<StorageMap>;
+ }
+ 
+-export { SERIALIZATION_ERROR, SerializationError, StorageMap, StorageModule, VALIDATION_ERROR, ValidationError, provideIndexedDBDataBaseName, provideIndexedDBDataBaseVersion, provideIndexedDBStoreName, provideLocalStoragePrefix };
++declare const IDB_DB_NAME: InjectionToken<string>;
++
++export { SERIALIZATION_ERROR, SerializationError, StorageMap, StorageModule, VALIDATION_ERROR, ValidationError, provideIndexedDBDataBaseName, provideIndexedDBDataBaseVersion, provideIndexedDBStoreName, provideLocalStoragePrefix, IDB_DB_NAME };
+ export type { JSONSchema, StorageConfig };

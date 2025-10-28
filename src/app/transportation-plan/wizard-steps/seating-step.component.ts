@@ -108,7 +108,7 @@ export class SeatingStepComponent {
   readonly colorCoded = signal(false);
   readonly selectedStudent = signal<Student | undefined>(undefined);
 
-  readonly ridersPerBench = model<number>(this.planService.currentPlan()?.ridersPerBench ?? 2);
+  readonly ridersPerBench = model<number>(this.planService.currentPlan()?.ridersPerBench ?? 3);
 
   planTitle = computed(() => this.planService.currentPlan()?.name ?? 'Seating Chart');
   busRows = computed(() => this.planService.currentPlan()?.bus?.rows ?? 13);
