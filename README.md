@@ -18,6 +18,8 @@ BetterBus exists to bring help to the drivers and enable them to be more compass
 
 ## 🚀 Features
 
+<img src="https://better-bus.github.io/samples/fake-seating-chart.png" alt="example printable seating chart" style="max-height: 600px" />
+
 - ✅ Multiple views of seating charts and rosters
 - ✅ Checklist tools for name learning and seat memorization
 - ✅ Local browser-based data storage (no server required)
