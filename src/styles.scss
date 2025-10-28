@@ -212,3 +212,9 @@ form {
 .nowrap {
   white-space: nowrap;
 }
+
+@media print {
+  * {
+    overflow: visible !important;
+  }
+}
